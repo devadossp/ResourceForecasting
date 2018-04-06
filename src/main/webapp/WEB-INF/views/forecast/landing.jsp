@@ -8,6 +8,7 @@
 </head>
 <body>
     <jsp:include page="menu.jsp" />
+     <jsp:include page="leavedetails.jsp" />
 	<p>${msg}</p>
 </body>
 </html>
