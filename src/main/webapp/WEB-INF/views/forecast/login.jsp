@@ -13,8 +13,8 @@
 	<body>
 		<div class="login">
 			<form:form name="login" method="POST" action="login" modelAttribute="loginBean">
-				<form:input placeholder="Username" id="username" path="userName"/>
-				<form:password placeholder="password" id="password" path="password"/>
+				<form:input placeholder="Username" id="username" path="userName" maxlength="6"/>
+				<form:password placeholder="password" id="password" path="password" maxlength="15"/>
 					<input type="submit" value="Sign In">
 			</form:form>	
 		</div>

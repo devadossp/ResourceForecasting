@@ -11,11 +11,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.cts.commsmedia.forecast.utils.Constants;
+import com.cts.commsmedia.forecast.utils.RFConstants;
  
 @Configuration
-@ComponentScan(basePackages = Constants.COMMON.COM_CTS_COMMSMEDIA)
-@PropertySource(value = { Constants.COMMON.CLASSPATH_APP_PROPERTIES })
+@ComponentScan(basePackages = RFConstants.COMMON.COM_CTS_COMMSMEDIA)
+@PropertySource(value = { RFConstants.COMMON.CLASSPATH_APP_PROPERTIES })
 public class ApplicationConfig {
  
     @Autowired
@@ -24,10 +24,10 @@ public class ApplicationConfig {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(env.getRequiredProperty(Constants.DATABASE.JDBC_DRIVER_CLASS_NAME));
-		dataSource.setUrl(env.getRequiredProperty(Constants.DATABASE.JDBC_URL));
-		dataSource.setUsername(env.getRequiredProperty(Constants.DATABASE.JDBC_USERNAME));
-		dataSource.setPassword(env.getRequiredProperty(Constants.DATABASE.JDBC_PASSWORD));
+		dataSource.setDriverClassName(env.getRequiredProperty(RFConstants.DATABASE.JDBC_DRIVER_CLASS_NAME));
+		dataSource.setUrl(env.getRequiredProperty(RFConstants.DATABASE.JDBC_URL));
+		dataSource.setUsername(env.getRequiredProperty(RFConstants.DATABASE.JDBC_USERNAME));
+		dataSource.setPassword(env.getRequiredProperty(RFConstants.DATABASE.JDBC_PASSWORD));
 		return dataSource;
 	}
  

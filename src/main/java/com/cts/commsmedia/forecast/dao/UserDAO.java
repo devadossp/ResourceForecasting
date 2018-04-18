@@ -1,6 +1,11 @@
 package com.cts.commsmedia.forecast.dao;
 
+import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
+import com.cts.commsmedia.forecast.model.UserDetailsVO;
+
 public interface UserDAO {
 
-	 public boolean isValidUser(String userName, String password);
+	 public UserDetailsVO isValidUser(String userName, String password);
+	 
+	 public UserDetailsScreenVO getLocationDetails();
 }

@@ -3,6 +3,7 @@ package com.cts.commsmedia.forecast.controller;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
+import com.cts.commsmedia.forecast.model.UserDetailsVO;
 import com.cts.commsmedia.forecast.model.UserVO;
 import com.cts.commsmedia.forecast.service.UserService;
+import com.cts.commsmedia.forecast.utils.RFConstants;
 
 @Controller
 public class LoginController {
@@ -31,19 +33,18 @@ public class LoginController {
      return modelAndView;
      }
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView Login(HttpServletRequest request, @ModelAttribute("loginBean") UserVO loginBean,Model model) {
-		boolean result;
-		ModelAndView modelAndView = null;
-		UserDetailsScreenVO userDetails=new UserDetailsScreenVO();
+	@RequestMapping(value = "/login", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView Login(HttpServletRequest request, @ModelAttribute("loginBean") UserVO loginBean, Model model) {
+		ModelAndView modelAndView = new ModelAndView();
+		UserDetailsVO userDetailsVO = new UserDetailsVO();
 		String userName = loginBean.getUserName();
 		String password = loginBean.getPassword();
-
+		// String subLoc= request.getParameter("subloc");
+		// String locValue= request.getParameter("value");
 		if (loginBean != null && userName != null && password != null) {
-			result = service.isValidUser(userName, password);
-			if (result) {
-				
-				model.addAttribute("userDetails", userDetails);
+			userDetailsVO = service.isValidUser(userName, password);
+			if (userDetailsVO.isValidUser()) {
+				createSession(request, userDetailsVO);
 				modelAndView = new ModelAndView("landing");
 			} else {
 				modelAndView = new ModelAndView("login");
@@ -53,6 +54,19 @@ public class LoginController {
 			modelAndView = new ModelAndView("loginpage");
 			modelAndView.addObject("msg", "Error occurred while processing");
 		}
+
+		/*
+		 * if(!StringUtil.isNullOrEmpty(subLoc) &&
+		 * subLoc.equalsIgnoreCase("true")){
+		 * userDetails=service.getSubLocation(locValue); }
+		 */
 		return modelAndView;
+	}
+	
+	private void createSession(HttpServletRequest request, UserDetailsVO userDetailsVO)
+	{
+		HttpSession session = request.getSession(false);
+		session.setAttribute(RFConstants.SESSION_USER_DETAILS,
+				userDetailsVO);
 	}
 }

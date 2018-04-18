@@ -14,11 +14,12 @@
 <body>
 	<div id='cssmenu'>
 	<ul>
-		<li><a href='#'>Home</a></li>
-	    <li class='active'><a href='#'>Leave Plans</a></li>
+		<li class='active'><a href='#'>Home</a></li>
+	    <li><a href='leaveplans'>Leave Plans</a></li>
 	    <li><a href='#'>Resource Master</a></li>
 	    <li><a href='#'>Location Master</a></li>
 	</ul>
 	</div>
+	<a href="logout" alt="Logout">Log Out</a>
 </body>
 </html>
