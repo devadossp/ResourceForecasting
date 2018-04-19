@@ -9,6 +9,18 @@
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	    <link href="<c:url value="/resources/css/styles.css" />" rel="stylesheet" type="text/css" />
 	    <title>Login Form2</title>
+	<style>
+		body {
+			background-image: url(resources/images/login.jpg); 
+			/* You will specify your image path here.*/
+			moz-background-size: cover;
+			webkit-background-size: cover;
+			background-size: cover;
+			background-position: top center !important;
+			background-repeat: no-repeat !important;
+			background-attachment: fixed;
+		}
+	</style>    
 	</head>
 	<body>
 		<div class="login">

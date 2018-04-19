@@ -5,11 +5,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link href="<c:url value="/resources/css/styles.css" />"
+	rel="stylesheet" type="text/css" />
 <title>Welcome to Landing page</title>
 </head>
 <body>
     <jsp:include page="menu.jsp" />
-   
+    <div class="bgimage"></div>
 	<p>${msg}</p>
 </body>
 </html>

@@ -121,16 +121,13 @@ input[type="submit"]:active {
   box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #31524d, 0px 5px 3px #999;
 }
 
-body {
-background-image: url(../images/login.jpg); 
-/* You will specify your image path here.
--moz-background-size: cover;
--webkit-background-size: cover;*/
-background-size: cover;
-background-position: top center !important;
-background-repeat: no-repeat !important;
-background-attachment: fixed;
-/*opacity: 0.4;
-            filter:alpha(opacity=40);*/
+.bgimage { 
+	max-width: 100%; 
+	margin: 0; 
+	padding: 60% 0% 0% 0%; 
+	background-image: url(../images/plan.jpg); 
+	background-size: contain; 
+	background-repeat: no-repeat; 
+	text-align: center; 
 }
 

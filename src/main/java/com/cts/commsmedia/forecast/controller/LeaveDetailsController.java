@@ -17,7 +17,7 @@ import com.cts.commsmedia.forecast.service.UserService;
 import com.cts.commsmedia.forecast.utils.RFConstants;
 
 @Controller
-public class LeaveDetailsController {
+public class LeaveDetailsController extends BaseController{
 	
 	@Autowired
 	UserService service;
@@ -25,15 +25,11 @@ public class LeaveDetailsController {
 	@RequestMapping(value = "/leaveplans", method = { RequestMethod.POST, RequestMethod.GET })
 	public ModelAndView leavePlans(HttpServletRequest request,
 			@ModelAttribute("userDetailsScreenVO") UserDetailsScreenVO userDetailsScreenVO, Model model) {
-		HttpSession session = request.getSession(false);
 		UserDetailsVO userDetailsVO = null;
-		if (session != null && session.getAttribute(RFConstants.SESSION_USER_DETAILS) != null) {
-			userDetailsVO = (UserDetailsVO) session.getAttribute(RFConstants.SESSION_USER_DETAILS);
-		}
+		userDetailsVO = getUserDetails(request);
 		userDetailsScreenVO = service.getLocationDetails();
 		userDetailsScreenVO.setProjectId(userDetailsVO.getAssociateDetails().getProjectName());
 		model.addAttribute("userDetailsScreenVO", userDetailsScreenVO);
 		return new ModelAndView("leavedetails");
 	}
-
 }
