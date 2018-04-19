@@ -52,7 +52,7 @@
 		<div class="rowClass">
 			<label class="fieldName"><spring:message code="current.assignment"/></label>
 			<form:select id="assignment" path="assignment">
-				<form:option value="">Select a Assignment</form:option>
+				<form:option value=""><spring:message code="select.a.assignment"/></form:option>
 				<form:option value="onSite">OnSite</form:option>
 				<form:option value="offShore">OffShore</form:option>
 			</form:select>
@@ -64,14 +64,14 @@
 		<div id="showLeaveDetails" style="display: none">
 			<table class="table table-hover small-text" id="tb">
 				<tr class="tr-header">
-					<th>Associate Name</th>
-					<th>Associate ID</th>
-					<th>No of Days</th>
-					<th>Month</th>
-					<th>From Date</th>
-					<th>To Date</th>
-					<th>Total Hrs</th>
-					<th>Working Hrs</th>
+					<th><spring:message code="associate.name"/></th>
+					<th><spring:message code="associate.id"/></th>
+					<th><spring:message code="no.of.days"/></th>
+					<th><spring:message code="month"/></th>
+					<th><spring:message code="from.date"/></th>
+					<th><spring:message code="to.date"/></th>
+					<th><spring:message code="total.hours"/></th>
+					<th><spring:message code="working.hours"/></th>
 					<th><a href="javascript:void(0);" style="font-size: 18px;"
 						id="addMore" title="Add More Rows"><span
 							class="glyphicon glyphicon-plus"></span></a></th>

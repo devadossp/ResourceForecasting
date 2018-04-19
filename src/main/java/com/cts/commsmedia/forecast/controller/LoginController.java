@@ -63,6 +63,11 @@ public class LoginController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "/home", method = { RequestMethod.POST, RequestMethod.GET })
+	public ModelAndView homePage(HttpServletRequest request, @ModelAttribute("loginBean") UserVO loginBean, Model model) {
+		return new ModelAndView("landing");
+	}
+	
 	private void createSession(HttpServletRequest request, UserDetailsVO userDetailsVO)
 	{
 		HttpSession session = request.getSession(false);
