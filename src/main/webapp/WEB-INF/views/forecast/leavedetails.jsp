@@ -76,8 +76,8 @@
 						id="addMore" title="Add More Rows"><span
 							class="glyphicon glyphicon-plus"></span></a></th>
 				<tr>
-					<td><form:input path="fullname" /></td>
-					<td><form:input path="empID" /></td>
+					<td><c:out value="${userDetailsScreenVO.fullname}"/></td>
+					<td><c:out value="${userDetailsScreenVO.empID}"/></td>
 					<td><form:input path="noOfDays" /></td>
 					<td class="rowClass"><form:select id="month"
 							path="selectedMonth" class="month">

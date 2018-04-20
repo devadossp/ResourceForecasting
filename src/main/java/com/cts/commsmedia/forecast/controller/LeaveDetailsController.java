@@ -28,6 +28,8 @@ public class LeaveDetailsController extends BaseController{
 		UserDetailsVO userDetailsVO = null;
 		userDetailsVO = getUserDetails(request);
 		userDetailsScreenVO = service.getLocationDetails();
+		userDetailsScreenVO.setFullname(userDetailsVO.getAssociateDetails().getAssociateName());
+		userDetailsScreenVO.setEmpID(userDetailsVO.getAssociateDetails().getAssociateId());
 		userDetailsScreenVO.setProjectId(userDetailsVO.getAssociateDetails().getProjectName());
 		model.addAttribute("userDetailsScreenVO", userDetailsScreenVO);
 		return new ModelAndView("leavedetails");
