@@ -54,12 +54,6 @@ public class LoginController {
 			modelAndView = new ModelAndView("loginpage");
 			modelAndView.addObject("msg", "Error occurred while processing");
 		}
-
-		/*
-		 * if(!StringUtil.isNullOrEmpty(subLoc) &&
-		 * subLoc.equalsIgnoreCase("true")){
-		 * userDetails=service.getSubLocation(locValue); }
-		 */
 		return modelAndView;
 	}
 	

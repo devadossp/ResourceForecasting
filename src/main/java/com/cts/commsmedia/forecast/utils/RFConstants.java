@@ -13,6 +13,23 @@ public class RFConstants {
 		public static final String CLASSPATH_APP_PROPERTIES = "classpath:application.properties";
 		public static final String COM_CTS_COMMSMEDIA = "com.cts.commsmedia";
 	}
+	
+	public static interface MONTHS {
+		public static final String JANUARY = "January";
+		public static final String FEBRUARY = "February";
+		public static final String MARCH = "March";
+		public static final String APRIL = "April";
+		public static final String MAY = "May";
+		public static final String JUNE = "June";
+		public static final String JULY = "July";
+		public static final String AUGUST = "August";
+		public static final String SEPTEMBER = "September";
+		public static final String OCTOBER = "October";
+		public static final String NOVEMBER = "November";
+		public static final String DECEMBER = "December";
+		public static final String NAME = "NAME";
+		public static final String ID = "ID";
+	}
 
 	public static final String ACCOUNT = "ACCOUNT";
 	public static final String ASSOCIATE_ID = "ASSOCIATE_ID";
@@ -32,6 +49,8 @@ public class RFConstants {
 	public static final String GEO = "GEO";
 	public static final String SUB_LOCATION = "SUB_LOCATION";
 	public static final String DAILY_HOURS = "DAILY_HOURS";
+	public static final String CURRENT_MONTH = "CURRENT_MONTH";
+	public static final String NEXT_MONTH = "NEXT_MONTH";
 	
 	public static final String SESSION_USER_DETAILS = "userDetailsVO";
 
