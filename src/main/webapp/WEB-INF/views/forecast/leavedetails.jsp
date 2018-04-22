@@ -179,7 +179,6 @@
 	    	    		totalhours: $tothrs,
 	    	    		workinghours: $worhrs
 	    			};
-	    		alert(JSON.stringify(emp_leave_details));
 	    	    
 	    	    $.ajax({ 
 	    	    	    url: "saveLeaves", 
@@ -224,11 +223,6 @@
    	  });
    	});
 
-
-function sendAjax() {
- 
-
-}
 </script>
 
 <style type="text/css">
