@@ -13,10 +13,12 @@
 <link
 	href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.min.css"
 	rel="stylesheet" type="text/css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>	
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> 	
 <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
@@ -28,7 +30,8 @@
 		</div>
 		<div class="rowClass">
 			<label class="fieldName"><spring:message code="location" /></label>
-			<form:select id="location" path="location" class="location" style="width:150px">
+			<form:select id="location" path="location" class="location"
+				style="width:150px">
 				<form:option value="0">
 					<spring:message code="select.a.location" />
 				</form:option>
@@ -79,34 +82,40 @@
 					<th><a href="javascript:void(0);" style="font-size: 18px;"
 						id="addMore" title="Add More Rows"><span
 							class="glyphicon glyphicon-plus"></span></a></th>
+					<th>&nbsp;</th>
+					<th>&nbsp;</th>
 				<tr>
-					<td><c:out value="${userDetailsScreenVO.fullname}" /></td>
-					<td><c:out value="${userDetailsScreenVO.empID}" /></td>
-					<td><form:input path="noOfDays" maxlength="2" style="width:50px"/></td>
-					<td class="rowClass"><form:select id="month"
-							path="selectedMonth" class="month" style="width:120px;height:26.5px">
+					<td id="empnameId"><c:out
+							value="${userDetailsScreenVO.fullname}" /></td>
+					<td id="empidId"><c:out value="${userDetailsScreenVO.empID}" /></td>
+					<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
+							style="width:50px" /></td>
+					<td class="rowClass"><form:select id="monthId"
+							path="selectedMonth" class="month"
+							style="width:120px;height:26.5px">
 							<form:option value="">Select a Month</form:option>
 							<c:forEach items="${userDetailsScreenVO.month_list}"
 								var="element">
 								<form:option value="${element.month_id}">${element.month_name}</form:option>
 							</c:forEach>
 						</form:select></td>
-					<td><form:input path="fromDate" id="fromdatepicker"
+					<td><form:input path="fromDate" maxlength="10" id="fromdatepicker"
 							class="fromdatepicker" /></td>
-					<td><form:input path="toDate" id="todatepicker"
+					<td><form:input path="toDate" maxlength="10" id="todatepicker"
 							class="todatepicker" /></td>
-					<td><form:input path="totalHrs" style="width:75px"/></td>
-					<td><form:input path="workingHrs" style="width:75px"/></td>
+					<td><form:input id="tothrsId" maxlength="3" path="totalHrs"
+							style="width:75px" /></td>
+					<td><form:input id="worhrsId" maxlength="3" path="workingHrs"
+							style="width:75px" /></td>
 					<td><a href='javascript:void(0);' class='remove'><span
 							class='glyphicon glyphicon-remove'></span></a></td>
+					<td><a href="javascript:void(0);" style="font-size: 16px;"
+						id="addRowdata" title="Add More Rows"><span
+							class="glyphicon glyphicon-plus"></span></a></td>
+					<td><a href='javascript:void(0);' class='save'><span
+							class='glyphicon glyphicon-edit'></span></a></td>
 				</tr>
 			</table>
-			<div class="rowClass" style="padding-top: 20px;">
-				<input type="submit" class="button" value="Apply Leave Details"
-					name="leaveDetails" onClick="validateLeave(this.form);" /> <input
-					type="button" class="button" value="Edit Leave Details"
-					name="editLeaveDetails" onClick="validateLeave(this.form);" />
-			</div>
 		</div>
 	</form:form>
 </body>
@@ -150,26 +159,43 @@
 	function showDiv() {
 		   document.getElementById('showLeaveDetails').style.display = "block";
 		}
-
-	/*function getSubLocation() {
-		var locname=$('#location').val();
-	   	 $.ajax({type : "POST",
-	   		data : {
-	   			"method" : "Login",
-	   			"value" : locname,
-	   			"subloc" : "true",
-	   			},
-	   		url : '/login',
-	   		success: function(result){
-	         var value = result;
-	        alert(value.length);
-	               
-	             
-	         },
-	    error: function() {
-	     }     });
-	     } */
 	
+	     $("#addRowdata").click(function() {
+	    	    var $row = $(this).closest("tr");    // Find the row
+	    	    var $associate_id = $row.find("#empidId").text(); 
+	    	    var $noofdays = $row.find("#noofdaysId").val(); 
+	    	    var $month = $row.find("#monthId option:selected").text(); 
+	    	    var $fromdate = $row.find("#fromdatepicker").val(); 
+	    	    var $todate = $row.find("#todatepicker").val(); 
+	    	    var $tothrs = $row.find("#tothrsId").val(); 
+	    	    var $worhrs = $row.find("#worhrsId").val();
+	    	    
+	    	    var emp_leave_details = { 
+	    	    		associate_id: $associate_id,
+	    	    		noofdays: $noofdays,
+	    	    		month_name: $month,
+	    	    		fromdate: $fromdate,
+	    	    		todate: $todate,
+	    	    		totalhours: $tothrs,
+	    	    		workinghours: $worhrs
+	    			};
+	    		alert(JSON.stringify(emp_leave_details));
+	    	    
+	    	    $.ajax({ 
+	    	    	    url: "saveLeaves", 
+	    	    	    type: 'POST', 
+	    	    	    dataType: 'json', 
+	    	    	    data: JSON.stringify(emp_leave_details),
+	    	    	    contentType: 'application/json',
+	    	    	    mimeType: 'application/json',
+	    	    	    success: function(data) { 
+	    	    	        alert(data.associate_id + " " + data.workinghours);
+	    	    	    },
+	    	    	    error:function(data,status,er) { 
+	    	    	        alert("error: "+data+" status: "+status+" er:"+er);
+	    	    	    }
+	    	    	});
+	    	});
 	
 	function validateLeave(myform){
 		myform.action="leaveDetails?method=applyLeaveDetails";
@@ -197,6 +223,12 @@
    		}
    	  });
    	});
+
+
+function sendAjax() {
+ 
+
+}
 </script>
 
 <style type="text/css">
