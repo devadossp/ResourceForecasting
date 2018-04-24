@@ -1,6 +1,7 @@
 package com.cts.commsmedia.forecast.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class LocationVO implements Serializable {
 
@@ -15,6 +16,7 @@ public class LocationVO implements Serializable {
     private String geo;
     private int subLocation;
     private int dailyHours;
+    private HashMap<String, Integer> monthly_working_days;
     
 	/**
 	 * @return the locationId
@@ -88,6 +90,17 @@ public class LocationVO implements Serializable {
 	public void setDailyHours(int dailyHours) {
 		this.dailyHours = dailyHours;
 	}
-    
-	
+	/**
+	 * @return the monthly_working_days
+	 */
+	public HashMap<String, Integer> getMonthly_working_days() {
+		return monthly_working_days;
+	}
+	/**
+	 * @param monthly_working_days the monthly_working_days to set
+	 */
+	public void setMonthly_working_days(HashMap<String, Integer> monthly_working_days) {
+		this.monthly_working_days = monthly_working_days;
+	}
+		
 }

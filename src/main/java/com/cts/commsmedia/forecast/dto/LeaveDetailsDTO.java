@@ -15,6 +15,8 @@ public class LeaveDetailsDTO {
 	private float rate;
 	private int totalworkingdays;
 	private String allocation_percentage;
+	private java.sql.Timestamp fromdate_timestamp;
+	private java.sql.Timestamp todate_timestamp;
 	
 	/**
 	 * @return the associate_id
@@ -171,6 +173,30 @@ public class LeaveDetailsDTO {
 	 */
 	public void setAllocation_percentage(String allocation_percentage) {
 		this.allocation_percentage = allocation_percentage;
+	}
+	/**
+	 * @return the fromdate_timestamp
+	 */
+	public java.sql.Timestamp getFromdate_timestamp() {
+		return fromdate_timestamp;
+	}
+	/**
+	 * @param fromdate_timestamp the fromdate_timestamp to set
+	 */
+	public void setFromdate_timestamp(java.sql.Timestamp fromdate_timestamp) {
+		this.fromdate_timestamp = fromdate_timestamp;
+	}
+	/**
+	 * @return the todate_timestamp
+	 */
+	public java.sql.Timestamp getTodate_timestamp() {
+		return todate_timestamp;
+	}
+	/**
+	 * @param todate_timestamp the todate_timestamp to set
+	 */
+	public void setTodate_timestamp(java.sql.Timestamp todate_timestamp) {
+		this.todate_timestamp = todate_timestamp;
 	}
 	
 	

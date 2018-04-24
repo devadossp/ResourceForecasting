@@ -3,7 +3,6 @@ package com.cts.commsmedia.forecast.controller;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,7 @@ import com.cts.commsmedia.forecast.dto.UserDetailsDto;
 import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
 import com.cts.commsmedia.forecast.model.UserDetailsVO;
 import com.cts.commsmedia.forecast.service.UserService;
+import com.cts.commsmedia.forecast.utils.CommonUtils;
 import com.cts.commsmedia.forecast.utils.RFConstants;
 
 @Controller
@@ -47,19 +47,17 @@ public class LeaveDetailsController extends BaseController{
 		return new ModelAndView("leavedetails");
 	}
 	
-	private void getMonths(UserDetailsScreenVO userDetailsScreenVO)
-	{
+	private void getMonths(UserDetailsScreenVO userDetailsScreenVO) {
 		ArrayList<UserDetailsDto> months = new ArrayList<UserDetailsDto>();
-		
+
 		UserDetailsDto currentMonthDetails = new UserDetailsDto();
-		currentMonthDetails.setMonth_id("4");
-		currentMonthDetails.setMonth_name("April");
+		currentMonthDetails.setMonth_id(CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.ID));
+		currentMonthDetails.setMonth_name(CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.NAME));
 		months.add(currentMonthDetails);
-		
 		UserDetailsDto nextMonthDetails = new UserDetailsDto();
-		nextMonthDetails.setMonth_id("5");
-		nextMonthDetails.setMonth_name("May");
-		
+		nextMonthDetails.setMonth_id(CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.ID));
+		nextMonthDetails.setMonth_name(CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.NAME));
+
 		months.add(nextMonthDetails);
 		userDetailsScreenVO.setMonth_list(months);
 	}
@@ -73,22 +71,17 @@ public class LeaveDetailsController extends BaseController{
 			leaveDetailsDTO.setLocation_id(userDetailsVO.getLocationDetails().getLocationId());
 			leaveDetailsDTO.setCrnumber(userDetailsVO.getAssociateDetails().getCrnumber());
 			leaveDetailsDTO.setGrouping("Gold NFR");// Check
-			leaveDetailsDTO.setTotalworkingdays(22);// code change
+			String location_id = String.valueOf(userDetailsVO.getLocationDetails().getLocationId());
+			location_id = RFConstants.UNDER_SCORE + location_id;
+			leaveDetailsDTO.setTotalworkingdays(userDetailsVO.getLocationDetails().getMonthly_working_days()
+					.get(leaveDetailsDTO.getMonth_name() + location_id));
 			leaveDetailsDTO.setRate(userDetailsVO.getAssociateDetails().getRatePerHour());
+			leaveDetailsDTO.setFromdate_timestamp(
+					CommonUtils.convertStringToTimestamp(leaveDetailsDTO.getFromdate() + RFConstants.FROM_DATE_FORMAT));
+			leaveDetailsDTO.setTodate_timestamp(
+					CommonUtils.convertStringToTimestamp(leaveDetailsDTO.getTodate() + RFConstants.TO_DATE_FORMAT));
+			service.insertLeaveDetails(leaveDetailsDTO);
 		}
-		System.out.println("Location Id:: "+ leaveDetailsDTO.getLocation_id());
-		System.out.println("Associate Id:: "+ leaveDetailsDTO.getAssociate_id());
-		System.out.println("CR Number:: "+ leaveDetailsDTO.getCrnumber());
-		System.out.println("Grouping:: "+ leaveDetailsDTO.getGrouping());
-		System.out.println("Total Hours:: "+ leaveDetailsDTO.getTotalhours());
-		System.out.println("Total Working Days:: "+ leaveDetailsDTO.getTotalworkingdays());
-		System.out.println("Month:: "+ leaveDetailsDTO.getMonth_name());
-		System.out.println("Working Hours:: "+ leaveDetailsDTO.getWorkinghours());
-		System.out.println("Rate:: "+ leaveDetailsDTO.getRate());
-		System.out.println("From Date:: "+ leaveDetailsDTO.getFromdate());
-		System.out.println("To Date:: "+ leaveDetailsDTO.getTodate());
-		System.out.println("No Of Days:: "+ leaveDetailsDTO.getNoofdays());
-		
 		return leaveDetailsDTO;
 	}
 }

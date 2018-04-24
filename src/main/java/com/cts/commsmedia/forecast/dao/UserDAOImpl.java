@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cts.commsmedia.forecast.dto.LeaveDetailsDTO;
 import com.cts.commsmedia.forecast.dto.UserDetailsDto;
 import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
 import com.cts.commsmedia.forecast.model.UserDetailsVO;
@@ -50,14 +51,16 @@ public class UserDAOImpl implements UserDAO{
 	public UserDetailsVO fetchUserDetails(String username) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select rfam.account,associate_id,associate_name,grade_name as associate_role,rfam.project_id,")
-		.append("project_name,rate_per_hour,rate_card_role,cr_number,allocation_percentage,is_active as status,")
-		.append("is_billable as billing_status,rfl.location_id,rfl.location_name,is_onsite as location_type,rfl.geo,rfl.sub_location,rfl.daily_hours ")
-		.append("from rf_associate_master rfam,rf_location rfl ")
-		.append("where rfam.location_group_name = rfl.location_id ")
-		.append("and associate_id = ?");
+				.append("project_name,rate_per_hour,rate_card_role,cr_number,allocation_percentage,is_active as status,")
+				.append("is_billable as billing_status,rfl.location_id,rfl.location_name,is_onsite as location_type,rfl.geo,rfl.sub_location,")
+				.append("rfl.daily_hours,rfl.january,rfl.february,rfl.march,rfl.april,rfl.may,rfl.june,rfl.july,rfl.august,rfl.september,")
+				.append("rfl.october,rfl.november,rfl.december ")
+				.append("from rf_associate_master rfam,rf_location rfl ")
+				.append("where rfam.location_group_name = rfl.location_id ")
+				.append("and associate_id = ? and rfl.year=2018");
 		@SuppressWarnings("unchecked")
-		UserDetailsVO userDetailsVO = (UserDetailsVO) jdbcTemplate.queryForObject(sql.toString(), new Object[] { username },
-				new UserDetailsRowMapper());
+		UserDetailsVO userDetailsVO = (UserDetailsVO) jdbcTemplate.queryForObject(sql.toString(),
+				new Object[] { username }, new UserDetailsRowMapper());
 		return userDetailsVO;
 	}
 	
@@ -85,4 +88,23 @@ public class UserDAOImpl implements UserDAO{
 		return userPojo;
 	}
 	
+	public void insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO) {
+		StringBuffer sql = new StringBuffer();
+		try {
+			sql.append(
+					"INSERT into RF_LEAVE_DETAILS(LOCATION_ID, ASSOCIATE_ID, CR_NUMBER, GROUPING, TOTAL_HOURS_PER_MONTH,")
+					.append("TOTAL_WORKING_DAYS, CURRENT_MONTH, WORKING_HOURS, RATE, FROM_DATE, TO_DATE, NO_OF_DAYS_LEAVE) ")
+					.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			jdbcTemplate.update(sql.toString(),
+					new Object[] { leaveDetailsDTO.getLocation_id(), leaveDetailsDTO.getAssociate_id(),
+							leaveDetailsDTO.getCrnumber(), leaveDetailsDTO.getGrouping(),
+							leaveDetailsDTO.getTotalhours(), leaveDetailsDTO.getTotalworkingdays(),
+							leaveDetailsDTO.getMonth_name(), leaveDetailsDTO.getWorkinghours(),
+							leaveDetailsDTO.getRate(), leaveDetailsDTO.getFromdate_timestamp(),
+							leaveDetailsDTO.getTodate_timestamp(), leaveDetailsDTO.getNoofdays() });
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+	}
 }

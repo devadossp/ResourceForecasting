@@ -51,6 +51,10 @@ public class RFConstants {
 	public static final String DAILY_HOURS = "DAILY_HOURS";
 	public static final String CURRENT_MONTH = "CURRENT_MONTH";
 	public static final String NEXT_MONTH = "NEXT_MONTH";
+	public static final String FROM_DATE_FORMAT = " 00:00:00";
+    public static final String TO_DATE_FORMAT = " 23:59:59";
+    public static final String UNDER_SCORE = "_";
+    public static final String EMPTY_STRING = "";
 	
 	public static final String SESSION_USER_DETAILS = "userDetailsVO";
 

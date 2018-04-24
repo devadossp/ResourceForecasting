@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cts.commsmedia.forecast.dao.UserDAO;
+import com.cts.commsmedia.forecast.dto.LeaveDetailsDTO;
 import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
 import com.cts.commsmedia.forecast.model.UserDetailsVO;
 
@@ -19,5 +20,9 @@ public class UserServiceImpl implements UserService {
 	
 	public UserDetailsScreenVO getLocationDetails(){
 		return userDao.getLocationDetails();
+	}
+	
+	public void insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO){
+		userDao.insertLeaveDetails(leaveDetailsDTO);
 	}
 }

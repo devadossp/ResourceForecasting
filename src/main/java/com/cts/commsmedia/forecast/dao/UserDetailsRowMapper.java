@@ -2,6 +2,7 @@ package com.cts.commsmedia.forecast.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -39,8 +40,35 @@ public class UserDetailsRowMapper implements RowMapper{
 		locationVO.setGeo(rs.getString(RFConstants.GEO));
 		locationVO.setSubLocation(rs.getInt(RFConstants.SUB_LOCATION));
 		locationVO.setDailyHours(rs.getInt(RFConstants.DAILY_HOURS));
+		locationVO.setMonthly_working_days(mapMonths(rs));
 		userDetailsVO.setLocationDetails(locationVO);
 		
 		return userDetailsVO;
+	}
+	
+	private HashMap<String, Integer> mapMonths(ResultSet rs) {
+		HashMap<String, Integer> months = new HashMap<String, Integer>();
+		String location_id = RFConstants.EMPTY_STRING;
+		try {
+			location_id = String.valueOf(rs.getInt(RFConstants.LOCATION_ID));
+			location_id = RFConstants.UNDER_SCORE + location_id;
+			months.put(RFConstants.MONTHS.JANUARY + location_id, new Integer(rs.getInt(RFConstants.MONTHS.JANUARY)));
+			months.put(RFConstants.MONTHS.FEBRUARY + location_id, new Integer(rs.getInt(RFConstants.MONTHS.FEBRUARY)));
+			months.put(RFConstants.MONTHS.MARCH + location_id, new Integer(rs.getInt(RFConstants.MONTHS.MARCH)));
+			months.put(RFConstants.MONTHS.APRIL + location_id, new Integer(rs.getInt(RFConstants.MONTHS.APRIL)));
+			months.put(RFConstants.MONTHS.MAY + location_id, new Integer(rs.getInt(RFConstants.MONTHS.MAY)));
+			months.put(RFConstants.MONTHS.JUNE + location_id, new Integer(rs.getInt(RFConstants.MONTHS.JUNE)));
+			months.put(RFConstants.MONTHS.JULY + location_id, new Integer(rs.getInt(RFConstants.MONTHS.JULY)));
+			months.put(RFConstants.MONTHS.AUGUST + location_id, new Integer(rs.getInt(RFConstants.MONTHS.AUGUST)));
+			months.put(RFConstants.MONTHS.SEPTEMBER + location_id,
+					new Integer(rs.getInt(RFConstants.MONTHS.SEPTEMBER)));
+			months.put(RFConstants.MONTHS.OCTOBER + location_id, new Integer(rs.getInt(RFConstants.MONTHS.OCTOBER)));
+			months.put(RFConstants.MONTHS.NOVEMBER + location_id, new Integer(rs.getInt(RFConstants.MONTHS.NOVEMBER)));
+			months.put(RFConstants.MONTHS.DECEMBER + location_id, new Integer(rs.getInt(RFConstants.MONTHS.DECEMBER)));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return months;
 	}
 }
