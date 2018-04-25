@@ -15,9 +15,6 @@
 	rel="stylesheet" type="text/css" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> 	
-<script src="//code.jquery.com/jquery-1.12.4.js"></script>
-<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
 <script src="//code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 <body>
@@ -40,11 +37,7 @@
 		<div class="rowClass">
 			<label class="fieldName"><spring:message
 					code="current.assignment" /></label>
-			<form:select id="assignment" path="assignment" style="width:150px">
-				<form:option value="">
-					<spring:message code="select.a.assignment" />
-				</form:option>
-			</form:select>
+			<c:out value="${userDetailsScreenVO.assignment}" />
 		</div>
 		<div class="rowClass" style="padding-top: 20px;">
 			<input type="button" class="button" value="Next" name="next"
@@ -54,10 +47,10 @@
 			<table class="table table-hover small-text" id="tb">
 				<tr class="tr-header">
 					<th><spring:message code="location" /></th>
-					<th><spring:message code="no.of.days" /></th>
 					<th><spring:message code="month" /></th>
 					<th><spring:message code="from.date" /></th>
 					<th><spring:message code="to.date" /></th>
+					<th><spring:message code="no.of.days" /></th>
 					<th><spring:message code="total.hours" /></th>
 					<th><spring:message code="working.hours" /></th>
 					<th><a href="javascript:void(0);" style="font-size: 18px;"
@@ -73,8 +66,6 @@
 							</c:forEach>
 						</form:select>
 					</td>
-					<td><form:input id="noofdaysId" path="noOfDays" maxlength="3"
-							style="width:50px" /></td>
 					<td class="rowClass"><form:select id="monthId"
 							path="selectedMonth" class="month"
 							style="width:120px;height:26.5px">
@@ -87,15 +78,17 @@
 							class="fromdatepicker" /></td>
 					<td><form:input path="toDate" maxlength="10" id="todatepicker"
 							class="todatepicker" /></td>
+					<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
+							style="width:50px" /></td>		
 					<td><span id="tothrsId" lang="hours"></span></td>
 					<td><span id="worhrsId" lang="hours"></span></td>
 					<td><a href='javascript:void(0);' class='remove'><span
 							class='glyphicon glyphicon-remove'></span></a></td>
 					<td><a href="javascript:void(0);" style="font-size: 16px;"
-						id="addRowdata" title="Add More Rows"><span
-							class="glyphicon glyphicon-plus"></span></a></td>
+						id="addRowdata" title="Save"><span
+							class="glyphicon glyphicon-ok-sign"></span></a></td>
 					<td><a href='javascript:void(0);' class='save'><span
-							class='glyphicon glyphicon-edit'></span></a></td>
+							class='glyphicon glyphicon-edit'></span></a></td>		
 				</tr>
 			</table>
 		</div>
@@ -105,6 +98,11 @@
 	// Regex to check whether the given text having any number
 	var regex = /^(.+?)(\d+)$/i;
 
+	
+	$('#noofdaysId').on('input', function (event) { 
+	    this.value = this.value.replace(/[^0-9]/g, '');
+	});
+	
 	$('.location').on('click', function () {
 		var locname=$('#location').val();
 		 if (locname == '3') {
@@ -117,8 +115,8 @@
 	    }
 	});
 	
-	$('#locationId').on('change', function () {
-		var $row = $(this).closest("tr");
+	function getIdValue($row)
+	{
 		var $att_id = $row.find("select").attr('id');
 		// To Check any number in the id attribute value 
 		var match = $att_id.match(regex);
@@ -129,6 +127,29 @@
 							$att_id.length);
 
 		}
+		return id_val;
+	}
+	
+	$('#locationId').on('change', function () {
+		var $row = $(this).closest("tr");
+		var id_val = getIdValue($row);
+		var $location_id = $row.find(
+				".location option:selected").val();
+		var location_details = $location_id.split("|");
+		var $sel_month_index = $("#monthId" + id_val).prop(
+		'selectedIndex');
+		if ($sel_month_index == 0) {
+			$("#tothrsId" + id_val).text(
+					location_details[1] * location_details[2]);
+		} else {
+			$("#tothrsId" + id_val).text(
+					location_details[1] * location_details[3]);
+		}
+	});
+	
+	$('#monthId').on('change', function () {
+		var $row = $(this).closest("tr");
+		var id_val = getIdValue($row);
 		var $location_id = $row.find(
 				".location option:selected").val();
 		var location_details = $location_id.split("|");
@@ -156,6 +177,7 @@
 			data.find('span[lang="hours"]').attr('id', function(i, val) {
 				return val + count;
 			});
+			data.find('span[lang="hours"]').text('');	
 			count++;
 		});
 		// Deleting new rows
@@ -182,15 +204,21 @@
 
 	$("#addRowdata").click(function() {
 		var $row = $(this).closest("tr"); // Find the row
-		//var $associate_id = $row.find("#empidId").text();
-		var $location = $row.find("#locationId option:selected").text();
+		var id_val = getIdValue($row);
+		var $location_id = $row.find("#locationId"+id_val+" option:selected").val();
+		var location_details = $location_id.split("|");
+
+		var $associate_id = <c:out value="${userDetailsScreenVO.empID}" />;
+		var $location = $row.find("#locationId"+id_val+" option:selected").text();
 		var $noofdays = $row.find("#noofdaysId").val();
-		var $month = $row.find("#monthId option:selected").text();
+		var $month = $row.find("#monthId"+id_val+" option:selected").text();
 		var $fromdate = $row.find("#fromdatepicker").val();
 		var $todate = $row.find("#todatepicker").val();
-		var $tothrs = $row.find("#tothrsId").val();
-		var $worhrs = $row.find("#worhrsId").val();
-
+		var $tothrs = $row.find("#tothrsId"+id_val).text();
+		var working_hrs = $tothrs-($noofdays*location_details[1]);
+		$("#worhrsId" + id_val).text(working_hrs);
+		var $worhrs = $row.find("#worhrsId"+id_val).text();
+		
 		/*  var emp_leave_details = { 
 		  		associate_id: $associate_id,
 		  		noofdays: $noofdays,

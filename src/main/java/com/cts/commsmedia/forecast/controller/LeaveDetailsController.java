@@ -38,6 +38,7 @@ public class LeaveDetailsController extends BaseController{
 			userDetailsScreenVO.setFullname(userDetailsVO.getAssociateDetails().getAssociateName());
 			userDetailsScreenVO.setEmpID(userDetailsVO.getAssociateDetails().getAssociateId());
 			userDetailsScreenVO.setProjectId(userDetailsVO.getAssociateDetails().getProjectName());
+			userDetailsScreenVO.setAssignment(userDetailsVO.getLocationDetails().getLocationType());
 			getMonths(userDetailsScreenVO);
 			model.addAttribute("userDetailsScreenVO", userDetailsScreenVO);
 		} else {
