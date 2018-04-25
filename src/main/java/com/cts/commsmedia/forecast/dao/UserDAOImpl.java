@@ -13,6 +13,8 @@ import com.cts.commsmedia.forecast.dto.LeaveDetailsDTO;
 import com.cts.commsmedia.forecast.dto.UserDetailsDto;
 import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
 import com.cts.commsmedia.forecast.model.UserDetailsVO;
+import com.cts.commsmedia.forecast.utils.CommonUtils;
+import com.cts.commsmedia.forecast.utils.RFConstants;
 
 @Repository
 @Qualifier("userDao")
@@ -69,13 +71,17 @@ public class UserDAOImpl implements UserDAO{
 		UserDetailsDto usesDetails = null;
 		UserDetailsScreenVO userPojo = new UserDetailsScreenVO();
 		ArrayList<UserDetailsDto> retBeanList = new ArrayList<UserDetailsDto>();
+		String Current_Month = CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.NAME);
+		String Next_Month = CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.NAME);
+		StringBuffer sql = new StringBuffer();
 		try {
-			String query = "select location_id,location_name from rf_location where location_id < 4";
-			List<Map<String, Object>> retList = jdbcTemplate.queryForList(query);
+			sql.append("select location_id||'|'||daily_hours||'|'||"+Current_Month+"||'|'||"+Next_Month+" as location_details,")
+			.append("location_name from rf_location where location_id <> 3");
+			List<Map<String, Object>> retList = jdbcTemplate.queryForList(sql.toString());
 			if (retList.size() != 0) {
 				for (Map value : retList) {
 					usesDetails = new UserDetailsDto();
-					usesDetails.setLocation_id(value.get("location_id").toString());
+					usesDetails.setLocation_id(value.get("location_details").toString());
 					usesDetails.setLocationName((String) value.get("location_name"));
 					retBeanList.add(usesDetails);
 				}

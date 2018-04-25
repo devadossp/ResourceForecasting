@@ -29,30 +29,12 @@
 			<c:out value="${userDetailsScreenVO.projectId}" />
 		</div>
 		<div class="rowClass">
-			<label class="fieldName"><spring:message code="location" /></label>
-			<form:select id="location" path="location" class="location"
-				style="width:150px">
-				<form:option value="0">
-					<spring:message code="select.a.location" />
-				</form:option>
-				<c:forEach items="${userDetailsScreenVO.location_list}"
-					var="element">
-					<form:option value="${element.location_id}">${element.locationName}</form:option>
-				</c:forEach>
-			</form:select>
+			<label class="fieldName"><spring:message code="associate.name" /></label>
+			<c:out value="${userDetailsScreenVO.fullname}" />
 		</div>
-		<div id="indLoc" style="display: none;" class="rowClass">
-			<label class="fieldName"><spring:message
-					code="india.location" /></label>
-			<form:radiobutton style="margin-left: 0px;" path="subLocation"
-				id="subLocation" />
-			<label for="chennai"><spring:message code="chennai.label" /></label>
-			<form:radiobutton style="margin-left: 0px;" path="subLocation"
-				id="subLocation" />
-			<label for="bangalore"><spring:message code="bangalore.label" /></label>
-			<form:radiobutton style="margin-left: 0px;" path="subLocation"
-				id="subLocation" />
-			<label for="hyderabad"><spring:message code="hyderabad.label" /></label>
+		<div class="rowClass">
+			<label class="fieldName"><spring:message code="associate.id" /></label>
+			<c:out value="${userDetailsScreenVO.empID}" />
 		</div>
 
 		<div class="rowClass">
@@ -71,8 +53,7 @@
 		<div id="showLeaveDetails" style="display: none">
 			<table class="table table-hover small-text" id="tb">
 				<tr class="tr-header">
-					<th><spring:message code="associate.name" /></th>
-					<th><spring:message code="associate.id" /></th>
+					<th><spring:message code="location" /></th>
 					<th><spring:message code="no.of.days" /></th>
 					<th><spring:message code="month" /></th>
 					<th><spring:message code="from.date" /></th>
@@ -85,15 +66,18 @@
 					<th>&nbsp;</th>
 					<th>&nbsp;</th>
 				<tr>
-					<td id="empnameId"><c:out
-							value="${userDetailsScreenVO.fullname}" /></td>
-					<td id="empidId"><c:out value="${userDetailsScreenVO.empID}" /></td>
-					<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
+					<td>
+						<form:select id="locationId" path="location" class="location" style="width:150px;height:26.5px">
+							<c:forEach items="${userDetailsScreenVO.location_list}" var="element">
+								<form:option value="${element.location_id}">${element.locationName}</form:option>
+							</c:forEach>
+						</form:select>
+					</td>
+					<td><form:input id="noofdaysId" path="noOfDays" maxlength="3"
 							style="width:50px" /></td>
 					<td class="rowClass"><form:select id="monthId"
 							path="selectedMonth" class="month"
 							style="width:120px;height:26.5px">
-							<form:option value="">Select a Month</form:option>
 							<c:forEach items="${userDetailsScreenVO.month_list}"
 								var="element">
 								<form:option value="${element.month_id}">${element.month_name}</form:option>
@@ -103,10 +87,8 @@
 							class="fromdatepicker" /></td>
 					<td><form:input path="toDate" maxlength="10" id="todatepicker"
 							class="todatepicker" /></td>
-					<td><form:input id="tothrsId" maxlength="3" path="totalHrs"
-							style="width:75px" /></td>
-					<td><form:input id="worhrsId" maxlength="3" path="workingHrs"
-							style="width:75px" /></td>
+					<td><span id="tothrsId" lang="hours"></span></td>
+					<td><span id="worhrsId" lang="hours"></span></td>
 					<td><a href='javascript:void(0);' class='remove'><span
 							class='glyphicon glyphicon-remove'></span></a></td>
 					<td><a href="javascript:void(0);" style="font-size: 16px;"
@@ -120,6 +102,8 @@
 	</form:form>
 </body>
 <script type="text/javascript">
+	// Regex to check whether the given text having any number
+	var regex = /^(.+?)(\d+)$/i;
 
 	$('.location').on('click', function () {
 		var locname=$('#location').val();
@@ -133,20 +117,57 @@
 	    }
 	});
 	
-	$(function(){
-	    $('#addMore').on('click', function() {    
-	              var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
-	              data.find("input").val('');
-	     });
-	     $(document).on('click', '.remove', function() {
-	         var trIndex = $(this).closest("tr").index();
-	            if(trIndex>1) {
-	             $(this).closest("tr").remove();
-	           } else {
-	             alert("Sorry!! Can't remove first row!");
-	           }
-	      });
-	}); 
+	$('#locationId').on('change', function () {
+		var $row = $(this).closest("tr");
+		var $att_id = $row.find("select").attr('id');
+		// To Check any number in the id attribute value 
+		var match = $att_id.match(regex);
+		var id_val = "";
+		if (match != null) {
+			id_val = $att_id
+					.substring(($att_id.indexOf("Id") + 2),
+							$att_id.length);
+
+		}
+		var $location_id = $row.find(
+				".location option:selected").val();
+		var location_details = $location_id.split("|");
+		var $sel_month_index = $("#monthId" + id_val).prop(
+		'selectedIndex');
+		if ($sel_month_index == 0) {
+			$("#tothrsId" + id_val).text(
+					location_details[1] * location_details[2]);
+		} else {
+			$("#tothrsId" + id_val).text(
+					location_details[1] * location_details[3]);
+		}
+	});
+	
+	// Function add/remove the dynamic rows
+	$(function() {
+		var count = 1;
+		// Adding new rows
+		$('#addMore').on('click', function() {
+			var data = $("#tb tr:eq(1)").clone(true).appendTo("#tb");
+			data.find("input").val('');
+			data.find('select').attr('id', function(i, val) {
+				return val + count;
+			});
+			data.find('span[lang="hours"]').attr('id', function(i, val) {
+				return val + count;
+			});
+			count++;
+		});
+		// Deleting new rows
+		$(document).on('click', '.remove', function() {
+			var trIndex = $(this).closest("tr").index();
+			if (trIndex > 1) {
+				$(this).closest("tr").remove();
+			} else {
+				alert("Sorry!! Can't remove first row!");
+			}
+		});
+	});
 	/* $( ".fromdatepicker" ).datepicker({
 		stepMonths: 0,
 	});
@@ -154,75 +175,73 @@
 	$( ".todatepicker" ).datepicker({
 		stepMonths: 0,
 	});*/
-	
-	
-	function showDiv() {
-		   document.getElementById('showLeaveDetails').style.display = "block";
-		}
-	
-	     $("#addRowdata").click(function() {
-	    	    var $row = $(this).closest("tr");    // Find the row
-	    	    var $associate_id = $row.find("#empidId").text(); 
-	    	    var $noofdays = $row.find("#noofdaysId").val(); 
-	    	    var $month = $row.find("#monthId option:selected").text(); 
-	    	    var $fromdate = $row.find("#fromdatepicker").val(); 
-	    	    var $todate = $row.find("#todatepicker").val(); 
-	    	    var $tothrs = $row.find("#tothrsId").val(); 
-	    	    var $worhrs = $row.find("#worhrsId").val();
-	    	    
-	    	    var emp_leave_details = { 
-	    	    		associate_id: $associate_id,
-	    	    		noofdays: $noofdays,
-	    	    		month_name: $month,
-	    	    		fromdate: $fromdate,
-	    	    		todate: $todate,
-	    	    		totalhours: $tothrs,
-	    	    		workinghours: $worhrs
-	    			};
-	    	    
-	    	    $.ajax({ 
-	    	    	    url: "saveLeaves", 
-	    	    	    type: 'POST', 
-	    	    	    dataType: 'json', 
-	    	    	    data: JSON.stringify(emp_leave_details),
-	    	    	    contentType: 'application/json',
-	    	    	    mimeType: 'application/json',
-	    	    	    success: function(data) { 
-	    	    	        alert(data.associate_id + " " + data.workinghours);
-	    	    	    },
-	    	    	    error:function(data,status,er) { 
-	    	    	        alert("error: "+data+" status: "+status+" er:"+er);
-	    	    	    }
-	    	    	});
-	    	});
-	
-	function validateLeave(myform){
-		myform.action="leaveDetails?method=applyLeaveDetails";
-		myform.submit(); 
-	}
-	
-    jQuery(document).ready(function(){
-   	  $("#location").change(function() {
-   		$assignment = $("select[name='assignment']");
-   		if ($(this).val() == "0") {
-   			$("select[name='assignment'] option").remove();
-			$("<option>Select a Assignment</option>")
-					.appendTo($assignment);
-   			}
-   		else if ($(this).val() == 3) {
-   			$("select[name='assignment'] option").remove();
-			$("<option value='Offshore'>Offshore</option>")
-					.appendTo($assignment);	
-		}
-	   	else
-   		{
-	   		$("select[name='assignment'] option").remove();
-			$("<option value='Onsite'>Onsite</option>")
-					.appendTo($assignment);
-   		}
-   	  });
-   	});
 
+	function showDiv() {
+		document.getElementById('showLeaveDetails').style.display = "block";
+	}
+
+	$("#addRowdata").click(function() {
+		var $row = $(this).closest("tr"); // Find the row
+		//var $associate_id = $row.find("#empidId").text();
+		var $location = $row.find("#locationId option:selected").text();
+		var $noofdays = $row.find("#noofdaysId").val();
+		var $month = $row.find("#monthId option:selected").text();
+		var $fromdate = $row.find("#fromdatepicker").val();
+		var $todate = $row.find("#todatepicker").val();
+		var $tothrs = $row.find("#tothrsId").val();
+		var $worhrs = $row.find("#worhrsId").val();
+
+		/*  var emp_leave_details = { 
+		  		associate_id: $associate_id,
+		  		noofdays: $noofdays,
+		  		month_name: $month,
+		  		fromdate: $fromdate,
+		  		todate: $todate,
+		  		totalhours: $tothrs,
+		  		workinghours: $worhrs
+			};
+		  
+		 $.ajax({ 
+		  	    url: "saveLeaves", 
+		  	    type: 'POST', 
+		  	    dataType: 'json', 
+		  	    data: JSON.stringify(emp_leave_details),
+		  	    contentType: 'application/json',
+		  	    mimeType: 'application/json',
+		  	    success: function(data) { 
+		  	        alert(data.associate_id + " " + data.workinghours);
+		  	    },
+		  	    error:function(data,status,er) { 
+		  	        alert("error: "+data+" status: "+status+" er:"+er);
+		  	    }
+		  	});*/
+	});
+
+	function validateLeave(myform) {
+		myform.action = "leaveDetails?method=applyLeaveDetails";
+		myform.submit();
+	}
+
+	jQuery(document).ready(
+			function() {
+				$("#location").change(
+						function() {
+							$assignment = $("select[name='assignment']");
+							if ($(this).val() == "0") {
+								$("select[name='assignment'] option").remove();
+								$("<option>Select a Assignment</option>")
+										.appendTo($assignment);
+							} else if ($(this).val() == 3) {
+								$("select[name='assignment'] option").remove();
+								$("<option value='Offshore'>Offshore</option>")
+										.appendTo($assignment);
+							} else {
+								$("select[name='assignment'] option").remove();
+								$("<option value='Onsite'>Onsite</option>")
+										.appendTo($assignment);
+							}
+						});
+			});
 </script>
 
 <style type="text/css">
