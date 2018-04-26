@@ -35,7 +35,7 @@ $(function () {
 			<li><a href='leaveplans'>Leave Plans</a></li>
 			<li><a href='#'>Resource Master</a></li>
 			<li><a href='#'>Location Master</a></li>
-			<li><a href='#'>Rate Card Master</a></li>
+			<li><a href='rateCardMaster'>Rate Card Master</a></li>
 			<li><a href='#'>Reports</a></li>
 			<li><a href="logout" alt="Logout">Log Out</a></li>
 		</ul>
