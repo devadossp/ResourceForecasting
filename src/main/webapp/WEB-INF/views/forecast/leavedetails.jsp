@@ -219,8 +219,9 @@
 		$("#worhrsId" + id_val).text(working_hrs);
 		var $worhrs = $row.find("#worhrsId"+id_val).text();
 		
-		/*  var emp_leave_details = { 
+		  var emp_leave_details = { 
 		  		associate_id: $associate_id,
+		  		leave_type: 'F',
 		  		noofdays: $noofdays,
 		  		month_name: $month,
 		  		fromdate: $fromdate,
@@ -228,8 +229,9 @@
 		  		totalhours: $tothrs,
 		  		workinghours: $worhrs
 			};
+		  alert(emp_leave_details);
 		  
-		 $.ajax({ 
+		$.ajax({ 
 		  	    url: "saveLeaves", 
 		  	    type: 'POST', 
 		  	    dataType: 'json', 
@@ -237,12 +239,12 @@
 		  	    contentType: 'application/json',
 		  	    mimeType: 'application/json',
 		  	    success: function(data) { 
-		  	        alert(data.associate_id + " " + data.workinghours);
+		  	        alert(data.associate_id + " " + data.leave_id);
 		  	    },
 		  	    error:function(data,status,er) { 
 		  	        alert("error: "+data+" status: "+status+" er:"+er);
 		  	    }
-		  	});*/
+		  	});
 	});
 
 	function validateLeave(myform) {

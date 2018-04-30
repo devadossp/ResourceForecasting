@@ -43,6 +43,7 @@ public class RFConstants {
 	public static final String RATE_CARD_ROLE = "RATE_CARD_ROLE";
 	public static final String STATUS = "STATUS";
 	public static final String BILLING_STATUS = "BILLING_STATUS";
+	public static final String GROUPING_NAME = "GROUPING_NAME";
 	public static final String LOCATION_ID = "LOCATION_ID";
 	public static final String LOCATION_NAME = "LOCATION_NAME";
 	public static final String LOCATION_TYPE = "LOCATION_TYPE";
@@ -55,6 +56,8 @@ public class RFConstants {
     public static final String TO_DATE_FORMAT = " 23:59:59";
     public static final String UNDER_SCORE = "_";
     public static final String EMPTY_STRING = "";
+    public static final String LOCATION_DETAILS = "LOCATION_DETAILS";
+    public static final String LEAVE_ID = "LEAVE_ID";
 	
 	public static final String SESSION_USER_DETAILS = "userDetailsVO";
 

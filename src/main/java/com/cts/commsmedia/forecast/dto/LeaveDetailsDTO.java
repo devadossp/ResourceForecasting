@@ -2,6 +2,8 @@ package com.cts.commsmedia.forecast.dto;
 
 public class LeaveDetailsDTO {
 	
+	private int leave_id;
+	private String leave_type;
 	private String associate_id;
 	private int noofdays;
 	private String month_name;
@@ -18,6 +20,30 @@ public class LeaveDetailsDTO {
 	private java.sql.Timestamp fromdate_timestamp;
 	private java.sql.Timestamp todate_timestamp;
 	
+	/**
+	 * @return the leave_id
+	 */
+	public int getLeave_id() {
+		return leave_id;
+	}
+	/**
+	 * @param leave_id the leave_id to set
+	 */
+	public void setLeave_id(int leave_id) {
+		this.leave_id = leave_id;
+	}
+	/**
+	 * @return the leave_type
+	 */
+	public String getLeave_type() {
+		return leave_type;
+	}
+	/**
+	 * @param leave_type the leave_type to set
+	 */
+	public void setLeave_type(String leave_type) {
+		this.leave_type = leave_type;
+	}
 	/**
 	 * @return the associate_id
 	 */
@@ -198,6 +224,4 @@ public class LeaveDetailsDTO {
 	public void setTodate_timestamp(java.sql.Timestamp todate_timestamp) {
 		this.todate_timestamp = todate_timestamp;
 	}
-	
-	
 }

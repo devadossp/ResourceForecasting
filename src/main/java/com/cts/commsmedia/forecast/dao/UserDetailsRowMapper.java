@@ -32,6 +32,7 @@ public class UserDetailsRowMapper implements RowMapper{
 		associateVO.setAllocationPercentage(rs.getInt(RFConstants.ALLOCATION_PERCENTAGE));
 		associateVO.setStatus(rs.getString(RFConstants.STATUS));
 		associateVO.setBillingStatus(rs.getString(RFConstants.BILLING_STATUS));
+		associateVO.setGroupingName(rs.getString(RFConstants.GROUPING_NAME));
 		userDetailsVO.setAssociateDetails(associateVO);
 		
 		locationVO.setLocationId(rs.getInt(RFConstants.LOCATION_ID));

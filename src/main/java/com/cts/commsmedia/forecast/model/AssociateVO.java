@@ -20,6 +20,7 @@ public class AssociateVO implements Serializable {
 	private String rateCardRole;
 	private String status;
 	private String billingStatus;
+	private String groupingName;
 	
 	/**
 	 * @return the associateId
@@ -165,6 +166,16 @@ public class AssociateVO implements Serializable {
 	public void setBillingStatus(String billingStatus) {
 		this.billingStatus = billingStatus;
 	}
-	
-	
+	/**
+	 * @return the groupingName
+	 */
+	public String getGroupingName() {
+		return groupingName;
+	}
+	/**
+	 * @param groupingName the groupingName to set
+	 */
+	public void setGroupingName(String groupingName) {
+		this.groupingName = groupingName;
+	}
 }

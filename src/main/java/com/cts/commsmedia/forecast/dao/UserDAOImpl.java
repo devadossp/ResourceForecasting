@@ -1,5 +1,8 @@
 package com.cts.commsmedia.forecast.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +10,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.cts.commsmedia.forecast.dto.LeaveDetailsDTO;
@@ -54,7 +60,7 @@ public class UserDAOImpl implements UserDAO{
 		StringBuffer sql = new StringBuffer();
 		sql.append("select rfam.account,associate_id,associate_name,grade_name as associate_role,rfam.project_id,")
 				.append("project_name,rate_per_hour,rate_card_role,cr_number,allocation_percentage,is_active as status,")
-				.append("is_billable as billing_status,rfl.location_id,rfl.location_name,location_type,rfl.geo,rfl.sub_location,")
+				.append("is_billable as billing_status,grouping_name,rfl.location_id,rfl.location_name,location_type,rfl.geo,rfl.sub_location,")
 				.append("rfl.daily_hours,rfl.january,rfl.february,rfl.march,rfl.april,rfl.may,rfl.june,rfl.july,rfl.august,rfl.september,")
 				.append("rfl.october,rfl.november,rfl.december ")
 				.append("from rf_associate_master rfam,rf_location rfl ")
@@ -81,8 +87,8 @@ public class UserDAOImpl implements UserDAO{
 			if (retList.size() != 0) {
 				for (Map value : retList) {
 					usesDetails = new UserDetailsDto();
-					usesDetails.setLocation_id(value.get("location_details").toString());
-					usesDetails.setLocationName((String) value.get("location_name"));
+					usesDetails.setLocation_id(value.get(RFConstants.LOCATION_DETAILS).toString());
+					usesDetails.setLocationName((String) value.get(RFConstants.LOCATION_NAME));
 					retBeanList.add(usesDetails);
 				}
 			}
@@ -94,23 +100,50 @@ public class UserDAOImpl implements UserDAO{
 		return userPojo;
 	}
 	
-	public void insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO) {
-		StringBuffer sql = new StringBuffer();
+	public int insertLeaveDetails(final LeaveDetailsDTO leaveDetailsDTO) {
+		final StringBuffer sql = new StringBuffer();
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
 			sql.append(
-					"INSERT into RF_LEAVE_DETAILS(LOCATION_ID, ASSOCIATE_ID, CR_NUMBER, GROUPING_NAME, TOTAL_HOURS_PER_MONTH,")
+					"INSERT into RF_LEAVE_DETAILS(LEAVE_TYPE, LOCATION_ID, ASSOCIATE_ID, CR_NUMBER, GROUPING_NAME, TOTAL_HOURS_PER_MONTH,")
 					.append("TOTAL_WORKING_DAYS, CURRENT_MONTH, WORKING_HOURS, RATE, FROM_DATE, TO_DATE, NO_OF_DAYS_LEAVE) ")
-					.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			jdbcTemplate.update(sql.toString(),
-					new Object[] { leaveDetailsDTO.getLocation_id(), leaveDetailsDTO.getAssociate_id(),
-							leaveDetailsDTO.getCrnumber(), leaveDetailsDTO.getGrouping(),
-							leaveDetailsDTO.getTotalhours(), leaveDetailsDTO.getTotalworkingdays(),
-							leaveDetailsDTO.getMonth_name(), leaveDetailsDTO.getWorkinghours(),
-							leaveDetailsDTO.getRate(), leaveDetailsDTO.getFromdate_timestamp(),
-							leaveDetailsDTO.getTodate_timestamp(), leaveDetailsDTO.getNoofdays() });
+					.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+			jdbcTemplate.update(new PreparedStatementCreator() {
+				public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+					PreparedStatement ps = connection.prepareStatement(sql.toString(), new String[] { RFConstants.LEAVE_ID });
+					ps.setString(1, leaveDetailsDTO.getLeave_type());
+					ps.setInt(2, leaveDetailsDTO.getLocation_id());
+					ps.setString(3, leaveDetailsDTO.getAssociate_id());
+					ps.setString(4, leaveDetailsDTO.getCrnumber());
+					ps.setString(5, leaveDetailsDTO.getGrouping());
+					ps.setInt(6, leaveDetailsDTO.getTotalhours());
+					ps.setInt(7, leaveDetailsDTO.getTotalworkingdays());
+					ps.setString(8, leaveDetailsDTO.getMonth_name());
+					ps.setInt(9, leaveDetailsDTO.getWorkinghours());
+					ps.setFloat(10, leaveDetailsDTO.getRate());
+					ps.setTimestamp(11, leaveDetailsDTO.getFromdate_timestamp());
+					ps.setTimestamp(12, leaveDetailsDTO.getTodate_timestamp());
+					ps.setInt(13, leaveDetailsDTO.getNoofdays());
+					return ps;
+				}
+			}, keyHolder);
+			/*
+			 * jdbcTemplate.update(sql.toString(), new Object[] {
+			 * leaveDetailsDTO.getLocation_id(),
+			 * leaveDetailsDTO.getAssociate_id(), leaveDetailsDTO.getCrnumber(),
+			 * leaveDetailsDTO.getGrouping(), leaveDetailsDTO.getTotalhours(),
+			 * leaveDetailsDTO.getTotalworkingdays(),
+			 * leaveDetailsDTO.getMonth_name(),
+			 * leaveDetailsDTO.getWorkinghours(), leaveDetailsDTO.getRate(),
+			 * leaveDetailsDTO.getFromdate_timestamp(),
+			 * leaveDetailsDTO.getTodate_timestamp(),
+			 * leaveDetailsDTO.getNoofdays() });
+			 */
 		} catch (Exception ex) {
 			ex.printStackTrace();
-
+			return 0;
 		}
+		return keyHolder.getKey().intValue();
 	}
 }

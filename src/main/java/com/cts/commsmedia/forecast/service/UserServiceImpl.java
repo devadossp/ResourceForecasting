@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 		return userDao.getLocationDetails();
 	}
 	
-	public void insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO){
-		userDao.insertLeaveDetails(leaveDetailsDTO);
+	public int insertLeaveDetails(final LeaveDetailsDTO leaveDetailsDTO){
+		return userDao.insertLeaveDetails(leaveDetailsDTO);
 	}
 }

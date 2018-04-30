@@ -51,10 +51,10 @@ public class LeaveDetailsController extends BaseController{
 	private void getMonths(UserDetailsScreenVO userDetailsScreenVO) {
 		ArrayList<UserDetailsDto> months = new ArrayList<UserDetailsDto>();
 
-		UserDetailsDto currentMonthDetails = new UserDetailsDto();
+		/*UserDetailsDto currentMonthDetails = new UserDetailsDto();
 		currentMonthDetails.setMonth_id(CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.ID));
 		currentMonthDetails.setMonth_name(CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.NAME));
-		months.add(currentMonthDetails);
+		months.add(currentMonthDetails);*/
 		UserDetailsDto nextMonthDetails = new UserDetailsDto();
 		nextMonthDetails.setMonth_id(CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.ID));
 		nextMonthDetails.setMonth_name(CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.NAME));
@@ -71,7 +71,7 @@ public class LeaveDetailsController extends BaseController{
 		if (userDetailsVO != null) {
 			leaveDetailsDTO.setLocation_id(userDetailsVO.getLocationDetails().getLocationId());
 			leaveDetailsDTO.setCrnumber(userDetailsVO.getAssociateDetails().getCrnumber());
-			leaveDetailsDTO.setGrouping("Gold NFR");// Check
+			leaveDetailsDTO.setGrouping(userDetailsVO.getAssociateDetails().getGroupingName());
 			String location_id = String.valueOf(userDetailsVO.getLocationDetails().getLocationId());
 			location_id = RFConstants.UNDER_SCORE + location_id;
 			leaveDetailsDTO.setTotalworkingdays(userDetailsVO.getLocationDetails().getMonthly_working_days()
@@ -81,7 +81,7 @@ public class LeaveDetailsController extends BaseController{
 					CommonUtils.convertStringToTimestamp(leaveDetailsDTO.getFromdate() + RFConstants.FROM_DATE_FORMAT));
 			leaveDetailsDTO.setTodate_timestamp(
 					CommonUtils.convertStringToTimestamp(leaveDetailsDTO.getTodate() + RFConstants.TO_DATE_FORMAT));
-			service.insertLeaveDetails(leaveDetailsDTO);
+			leaveDetailsDTO.setLeave_id(service.insertLeaveDetails(leaveDetailsDTO));
 		}
 		return leaveDetailsDTO;
 	}

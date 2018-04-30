@@ -10,5 +10,5 @@ public interface UserDAO {
 	 
 	 public UserDetailsScreenVO getLocationDetails();
 	 
-	 public void insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO);
+	 public int insertLeaveDetails(final LeaveDetailsDTO leaveDetailsDTO);
 }
