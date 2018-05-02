@@ -26,7 +26,8 @@
 			<c:out value="${userDetailsScreenVO.projectId}" />
 		</div>
 		<div class="rowClass">
-			<label class="fieldName"><spring:message code="associate.name" /></label>
+			<label class="fieldName"><spring:message
+					code="associate.name" /></label>
 			<c:out value="${userDetailsScreenVO.fullname}" />
 		</div>
 		<div class="rowClass">
@@ -43,54 +44,114 @@
 			<input type="button" class="button" value="Next" name="next"
 				onClick="showDiv()" />
 		</div>
-		<div id="showLeaveDetails" style="display: none">
-			<table class="table table-hover small-text" id="tb">
-				<tr class="tr-header">
-					<th><spring:message code="location" /></th>
-					<th><spring:message code="month" /></th>
-					<th><spring:message code="from.date" /></th>
-					<th><spring:message code="to.date" /></th>
-					<th><spring:message code="no.of.days" /></th>
-					<th><spring:message code="total.hours" /></th>
-					<th><spring:message code="working.hours" /></th>
-					<th><a href="javascript:void(0);" style="font-size: 18px;"
-						id="addMore" title="Add More Rows"><span
-							class="glyphicon glyphicon-plus"></span></a></th>
-					<th>&nbsp;</th>
-					<th>&nbsp;</th>
-				<tr>
-					<td>
-						<form:select id="locationId" path="location" class="location" style="width:150px;height:26.5px">
-							<c:forEach items="${userDetailsScreenVO.location_list}" var="element">
-								<form:option value="${element.location_id}">${element.locationName}</form:option>
-							</c:forEach>
-						</form:select>
-					</td>
-					<td class="rowClass"><form:select id="monthId"
-							path="selectedMonth" class="month"
-							style="width:120px;height:26.5px">
-							<c:forEach items="${userDetailsScreenVO.month_list}"
-								var="element">
-								<form:option value="${element.month_id}">${element.month_name}</form:option>
-							</c:forEach>
-						</form:select></td>
-					<td><form:input path="fromDate" maxlength="10" id="fromdatepicker"
-							class="fromdatepicker" /></td>
-					<td><form:input path="toDate" maxlength="10" id="todatepicker"
-							class="todatepicker" /></td>
-					<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
-							style="width:50px" /></td>		
-					<td><span id="tothrsId" lang="hours"></span></td>
-					<td><span id="worhrsId" lang="hours"></span></td>
-					<td><a href='javascript:void(0);' class='remove'><span
-							class='glyphicon glyphicon-remove'></span></a></td>
-					<td><a href="javascript:void(0);" style="font-size: 16px;"
-						id="addRowdata" title="Save"><span
-							class="glyphicon glyphicon-ok-sign"></span></a></td>
-					<td><a href='javascript:void(0);' class='save'><span
-							class='glyphicon glyphicon-edit'></span></a></td>		
-				</tr>
-			</table>
+
+		<ul id="tabs">
+			<li><a id="tab1">Forecasting</a></li>
+			<li><a id="tab2">Actuals</a></li>
+		</ul>
+
+		<div class="container" id="tab1C">
+			<div id="leaveForecast" style="display: none">
+				<table class="table table-hover small-text" id="tb">
+					<tr class="tr-header">
+						<th><spring:message code="location" /></th>
+						<th><spring:message code="month" /></th>
+						<th><spring:message code="from.date" /></th>
+						<th><spring:message code="to.date" /></th>
+						<th><spring:message code="no.of.days" /></th>
+						<th><spring:message code="total.hours" /></th>
+						<th><spring:message code="working.hours" /></th>
+						<th><a href="javascript:void(0);" style="font-size: 18px;"
+							id="addMore" title="Add More Rows"><span
+								class="glyphicon glyphicon-plus"></span></a></th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+					<tr>
+						<td><form:select id="locationId" path="location"
+								class="location" style="width:150px;height:26.5px">
+								<c:forEach items="${userDetailsScreenVO.location_list}"
+									var="element">
+									<form:option value="${element.location_id}">${element.locationName}</form:option>
+								</c:forEach>
+							</form:select></td>
+						<td class="rowClass"><form:select id="monthId"
+								path="selectedMonth" class="month"
+								style="width:120px;height:26.5px">
+								<c:forEach items="${userDetailsScreenVO.month_list}"
+									var="element">
+									<form:option value="${element.month_id}">${element.month_name}</form:option>
+								</c:forEach>
+							</form:select></td>
+						<td><form:input path="fromDate" maxlength="10"
+								id="fromdatepicker" class="fromdatepicker" /></td>
+						<td><form:input path="toDate" maxlength="10"
+								id="todatepicker" class="todatepicker" /></td>
+						<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
+								style="width:50px" /></td>
+						<td><span id="tothrsId" lang="hours"></span></td>
+						<td><span id="worhrsId" lang="hours"></span></td>
+						<td><a href='javascript:void(0);' class='remove'><span
+								class='glyphicon glyphicon-remove'></span></a></td>
+						<td><a href="javascript:void(0);" style="font-size: 16px;"
+							id="addRowdata" title="Save"><span
+								class="glyphicon glyphicon-ok-sign"></span></a></td>
+						<td><a href='javascript:void(0);' class='save'><span
+								class='glyphicon glyphicon-edit'></span></a></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div class="container" id="tab2C">
+			<div id="leaveForecast">
+				<table class="table table-hover small-text" id="tb2">
+					<tr class="tr-header">
+						<th><spring:message code="location" /></th>
+						<th><spring:message code="month" /></th>
+						<th><spring:message code="from.date" /></th>
+						<th><spring:message code="to.date" /></th>
+						<th><spring:message code="no.of.days" /></th>
+						<th><spring:message code="total.hours" /></th>
+						<th><spring:message code="working.hours" /></th>
+						<th><a href="javascript:void(0);" style="font-size: 18px;"
+							id="addMore" title="Add More Rows"><span
+								class="glyphicon glyphicon-plus"></span></a></th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+					<tr>
+						<td><form:select id="locationId" path="location"
+								class="location" style="width:150px;height:26.5px">
+								<c:forEach items="${userDetailsScreenVO.location_list}"
+									var="element">
+									<form:option value="${element.location_id}">${element.locationName}</form:option>
+								</c:forEach>
+							</form:select></td>
+						<td class="rowClass"><form:select id="monthId"
+								path="selectedMonth" class="month"
+								style="width:120px;height:26.5px">
+								<c:forEach items="${userDetailsScreenVO.month_list}"
+									var="element">
+									<form:option value="${element.month_id}">${element.month_name}</form:option>
+								</c:forEach>
+							</form:select></td>
+						<td><form:input path="fromDate" maxlength="10"
+								id="fromdatepicker" class="fromdatepicker" /></td>
+						<td><form:input path="toDate" maxlength="10"
+								id="todatepicker" class="todatepicker" /></td>
+						<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
+								style="width:50px" /></td>
+						<td><span id="tothrsId" lang="hours"></span></td>
+						<td><span id="worhrsId" lang="hours"></span></td>
+						<td><a href='javascript:void(0);' class='remove'><span
+								class='glyphicon glyphicon-remove'></span></a></td>
+						<td><a href="javascript:void(0);" style="font-size: 16px;"
+							id="addRowdata" title="Save"><span
+								class="glyphicon glyphicon-ok-sign"></span></a></td>
+						<td><a href='javascript:void(0);' class='save'><span
+								class='glyphicon glyphicon-edit'></span></a></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</form:form>
 </body>
@@ -199,7 +260,9 @@
 	});*/
 
 	function showDiv() {
-		document.getElementById('showLeaveDetails').style.display = "block";
+		$('#tabs').show();
+		$('#tab1C').show();
+		$('#leaveForecast').show();
 	}
 
 	$("#addRowdata").click(function() {
@@ -229,8 +292,6 @@
 		  		totalhours: $tothrs,
 		  		workinghours: $worhrs
 			};
-		  alert(emp_leave_details);
-		  
 		$.ajax({ 
 		  	    url: "saveLeaves", 
 		  	    type: 'POST', 
@@ -271,6 +332,23 @@
 										.appendTo($assignment);
 							}
 						});
+				
+				$('#tabs li a:not(:first)').addClass('inactive');
+				$('.container').hide();
+				$('.container:first').show();
+				    
+				$('#tabs li a').click(function(){
+				    var t = $(this).attr('id');
+				  if($(this).hasClass('inactive')){ //this is the start of our condition 
+				    $('#tabs li a').addClass('inactive');           
+				    $(this).removeClass('inactive');
+				    
+				    $('.container').hide();
+				    $('#'+ t + 'C').fadeIn('slow');
+				 }
+				});
+				$('.container').hide();
+				$('#tabs').hide();
 			});
 </script>
 
@@ -297,6 +375,101 @@
 .fieldName {
 	text-align: left;
 	font-size: 16px;
+}
+
+#tabs {
+	width: 100%;
+	height: 30px;
+	border-bottom: solid 1px #CCC;
+	padding-right: 2px;
+	margin-top: 30px;
+}
+
+a {
+	cursor: pointer;
+}
+
+#tabs li {
+	float: left;
+	list-style: none;
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	margin-right: 5px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	outline: none;
+}
+
+#tabs li a {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	font-weight: bold;
+	color: #5685bc;;
+	padding-top: 5px;
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-bottom: 8px;
+	display: block;
+	background: #FFF;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	text-decoration: none;
+	outline: none;
+}
+
+#tabs li a.inactive {
+	padding-top: 5px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+	padding-right: 8px;
+	color: #666666;
+	background: #EEE;
+	outline: none;
+	border-bottom: solid 1px #CCC;
+}
+
+#tabs li a:hover, #tabs li a.inactive:hover {
+	color: #5685bc;
+	outline: none;
+}
+
+.container {
+	clear: both;
+	width: 100%;
+	border-left: solid 1px #CCC;
+	border-right: solid 1px #CCC;
+	border-bottom: solid 1px #CCC;
+	text-align: left;
+	padding-top: 20px;
+}
+
+.container h2 {
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 10px;
+	color: #5685bc;
+}
+
+.container p {
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	line-height: 1.3;
+	font-size: small;
+}
+
+.container ul {
+	margin-left: 25px;
+	font-size: small;
+	line-height: 1.4;
+	list-style-type: disc;
+}
+
+.container li {
+	padding-bottom: 5px;
+	margin-left: 5px;
 }
 </style>
 </html>

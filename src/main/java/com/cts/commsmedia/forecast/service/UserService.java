@@ -10,5 +10,5 @@ public interface UserService {
 	 
 	 public UserDetailsScreenVO getLocationDetails();
 	 
-	 public int insertLeaveDetails(final LeaveDetailsDTO leaveDetailsDTO);
+	 public int insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO);
 }

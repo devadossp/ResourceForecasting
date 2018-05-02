@@ -100,50 +100,28 @@ public class UserDAOImpl implements UserDAO{
 		return userPojo;
 	}
 	
-	public int insertLeaveDetails(final LeaveDetailsDTO leaveDetailsDTO) {
+	public int insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO) {
 		final StringBuffer sql = new StringBuffer();
-		KeyHolder keyHolder = new GeneratedKeyHolder();
+		int rows = 0;
 		try {
 			sql.append(
-					"INSERT into RF_LEAVE_DETAILS(LEAVE_TYPE, LOCATION_ID, ASSOCIATE_ID, CR_NUMBER, GROUPING_NAME, TOTAL_HOURS_PER_MONTH,")
+					"INSERT into RF_LEAVE_DETAILS(LEAVE_ID, LEAVE_TYPE, LOCATION_ID, ASSOCIATE_ID, CR_NUMBER, GROUPING_NAME, TOTAL_HOURS_PER_MONTH,")
 					.append("TOTAL_WORKING_DAYS, CURRENT_MONTH, WORKING_HOURS, RATE, FROM_DATE, TO_DATE, NO_OF_DAYS_LEAVE) ")
-					.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					.append("VALUES (rf_leave_id_seq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-			jdbcTemplate.update(new PreparedStatementCreator() {
-				public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-					PreparedStatement ps = connection.prepareStatement(sql.toString(), new String[] { RFConstants.LEAVE_ID });
-					ps.setString(1, leaveDetailsDTO.getLeave_type());
-					ps.setInt(2, leaveDetailsDTO.getLocation_id());
-					ps.setString(3, leaveDetailsDTO.getAssociate_id());
-					ps.setString(4, leaveDetailsDTO.getCrnumber());
-					ps.setString(5, leaveDetailsDTO.getGrouping());
-					ps.setInt(6, leaveDetailsDTO.getTotalhours());
-					ps.setInt(7, leaveDetailsDTO.getTotalworkingdays());
-					ps.setString(8, leaveDetailsDTO.getMonth_name());
-					ps.setInt(9, leaveDetailsDTO.getWorkinghours());
-					ps.setFloat(10, leaveDetailsDTO.getRate());
-					ps.setTimestamp(11, leaveDetailsDTO.getFromdate_timestamp());
-					ps.setTimestamp(12, leaveDetailsDTO.getTodate_timestamp());
-					ps.setInt(13, leaveDetailsDTO.getNoofdays());
-					return ps;
-				}
-			}, keyHolder);
-			/*
-			 * jdbcTemplate.update(sql.toString(), new Object[] {
-			 * leaveDetailsDTO.getLocation_id(),
-			 * leaveDetailsDTO.getAssociate_id(), leaveDetailsDTO.getCrnumber(),
-			 * leaveDetailsDTO.getGrouping(), leaveDetailsDTO.getTotalhours(),
-			 * leaveDetailsDTO.getTotalworkingdays(),
-			 * leaveDetailsDTO.getMonth_name(),
-			 * leaveDetailsDTO.getWorkinghours(), leaveDetailsDTO.getRate(),
-			 * leaveDetailsDTO.getFromdate_timestamp(),
-			 * leaveDetailsDTO.getTodate_timestamp(),
-			 * leaveDetailsDTO.getNoofdays() });
-			 */
+			rows = jdbcTemplate.update(sql.toString(),
+					new Object[] { leaveDetailsDTO.getLeave_type(), leaveDetailsDTO.getLocation_id(),
+							leaveDetailsDTO.getAssociate_id(), leaveDetailsDTO.getCrnumber(),
+							leaveDetailsDTO.getGrouping(), leaveDetailsDTO.getTotalhours(),
+							leaveDetailsDTO.getTotalworkingdays(), leaveDetailsDTO.getMonth_name(),
+							leaveDetailsDTO.getWorkinghours(), leaveDetailsDTO.getRate(),
+							leaveDetailsDTO.getFromdate_timestamp(), leaveDetailsDTO.getTodate_timestamp(),
+							leaveDetailsDTO.getNoofdays() });
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return 0;
 		}
-		return keyHolder.getKey().intValue();
+		return rows;
 	}
 }
