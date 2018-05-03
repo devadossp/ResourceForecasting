@@ -125,33 +125,37 @@ public class UserDAOImpl implements UserDAO{
 		return rows;
 	}
 	
-public List getLeaveDetails(String associate_id) {
-		
+	public List getLeaveDetails(String associate_id) {
 		String Current_Month = CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.NAME);
-		String Next_Month = CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.NAME);		
-		List leaveDetails=new ArrayList();
-		
-		StringBuffer forecastSqlQuery = new StringBuffer();			
-		forecastSqlQuery.append("select rl.location_id||'|'||rl.daily_hours||'|'||"+Current_Month+"||'|'||"+Next_Month+" as location_details,rld.* From Rf_Leave_Details Rld, Rf_Location Rl")
-				 .append(" Where Rld.Location_Id=Rl.Location_Id And associate_id=? and")
-		.append(" to_char(from_date,'MON YYYY')=to_char(ADD_MONTHS(sysdate,1),'MON YYYY') and LEAVE_TYPE='F'");
+		String Next_Month = CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.NAME);
+		List leaveDetails = new ArrayList();
+
+		StringBuffer forecastSqlQuery = new StringBuffer();
+		forecastSqlQuery
+				.append("select rl.location_id||'|'||rl.daily_hours||'|'||" + Current_Month + "||'|'||" + Next_Month
+						+ " as location_details,rld.leave_id,rld.leave_type,rld.associate_id,rld.total_hours_per_month,rld.total_working_days,")
+				.append("rld.working_hours,to_char(rld.from_date,'MM/DD/YYYY') as from_date,to_char(rld.to_date,'MM/DD/YYYY') as to_date,")
+				.append("rld.no_of_days_leave From Rf_Leave_Details Rld, Rf_Location Rl")
+				.append(" Where Rld.Location_Id=Rl.Location_Id And associate_id=? and")
+				.append(" to_char(from_date,'MON YYYY')=to_char(ADD_MONTHS(sysdate,1),'MON YYYY') and LEAVE_TYPE='F'");
 		@SuppressWarnings("unchecked")
-		List forecastLeaveDetails = (List) jdbcTemplate.query(forecastSqlQuery.toString(), new Object[] { associate_id },
-				new leaveDetailsRowMapper());
-		
+		List forecastLeaveDetails = (List) jdbcTemplate.query(forecastSqlQuery.toString(),
+				new Object[] { associate_id }, new leaveDetailsRowMapper());
+
 		leaveDetails.add(forecastLeaveDetails);
-		
-		StringBuffer actualSqlQuery = new StringBuffer();			
-		actualSqlQuery.append("select rl.location_id||'|'||rl.daily_hours||'|'||"+Current_Month+"||'|'||"+Next_Month+" as location_details,rld.* From Rf_Leave_Details Rld, Rf_Location Rl")
-				 .append(" Where Rld.Location_Id=Rl.Location_Id And associate_id=? and")
-		.append(" to_char(from_date,'MON YYYY')=to_char(ADD_MONTHS(sysdate,-1),'MON YYYY') and LEAVE_TYPE in ('A','F')");
+
+		StringBuffer actualSqlQuery = new StringBuffer();
+		actualSqlQuery
+				.append("select rl.location_id||'|'||rl.daily_hours||'|'||" + Current_Month + "||'|'||" + Next_Month
+						+ " as location_details,rld.* From Rf_Leave_Details Rld, Rf_Location Rl")
+				.append(" Where Rld.Location_Id=Rl.Location_Id And associate_id=? and")
+				.append(" to_char(from_date,'MON YYYY')=to_char(ADD_MONTHS(sysdate,-1),'MON YYYY') and LEAVE_TYPE in ('A','F')");
 		@SuppressWarnings("unchecked")
 		List actualLeaveDetails = (List) jdbcTemplate.query(actualSqlQuery.toString(), new Object[] { associate_id },
 				new leaveDetailsRowMapper());
-		
+
 		leaveDetails.add(actualLeaveDetails);
-		
-	return leaveDetails;
+		return leaveDetails;
 	}
 
 }
