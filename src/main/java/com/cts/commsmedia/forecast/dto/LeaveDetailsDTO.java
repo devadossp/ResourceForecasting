@@ -19,6 +19,8 @@ public class LeaveDetailsDTO {
 	private String allocation_percentage;
 	private java.sql.Timestamp fromdate_timestamp;
 	private java.sql.Timestamp todate_timestamp;
+	private String locationid;	
+
 	
 	/**
 	 * @return the leave_id
@@ -223,5 +225,13 @@ public class LeaveDetailsDTO {
 	 */
 	public void setTodate_timestamp(java.sql.Timestamp todate_timestamp) {
 		this.todate_timestamp = todate_timestamp;
+	}
+	
+	public String getLocationid() {
+		return locationid;
+	}
+	
+	public void setLocationid(String locationid) {
+		this.locationid = locationid;
 	}
 }

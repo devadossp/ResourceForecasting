@@ -150,11 +150,59 @@
 						<td><a href='javascript:void(0);' class='save'><span
 								class='glyphicon glyphicon-edit'></span></a></td>
 					</tr>
+					<c:if test="${not empty leaveDetailsList}">				
+				<c:forEach var="leaveDetailsList" items="${leaveDetailsList}">
+				<tr>
+					<td>
+						<form:select id="locationId" path="location" class="location" style="width:150px;height:26.5px">
+							<c:forEach items="${userDetailsScreenVO.location_list}" var="element">							
+								<c:choose>
+								<c:when test="${element.location_id eq leaveDetailsList.locationid}">
+								<form:option value="${element.location_id}" selected="selected">${element.locationName}</form:option>
+								</c:when>
+								<c:otherwise>
+								<form:option value="${element.location_id}" >${element.locationName}</form:option>
+								</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</form:select>
+					</td>
+					
+					<td class="rowClass"><form:select id="monthId"
+							path="selectedMonth" class="month"
+							style="width:120px;height:26.5px">
+							<c:forEach items="${userDetailsScreenVO.month_list}"
+								var="element">
+								<form:option value="${element.month_id}">${element.month_name}</form:option>
+							</c:forEach>
+						</form:select></td>
+					<td><form:input path="fromDate" maxlength="10" id="fromdatepicker"
+							class="fromdatepicker" value="${leaveDetailsList.fromdate}"/></td>
+					<td><form:input path="toDate" maxlength="10" id="todatepicker"
+							class="todatepicker" value="${leaveDetailsList.todate}"/></td>		
+					<td><form:input id="noofdaysId" path="noOfDays" maxlength="3"
+							style="width:50px" value="${leaveDetailsList.noofdays}"/></td>
+					<td><span id="tothrsId" lang="hours">${leaveDetailsList.totalhours}</span></td>
+					<td><span id="worhrsId" lang="hours">${leaveDetailsList.workinghours}</span></td>
+					<td><a href='javascript:void(0);' class='remove'><span
+							class='glyphicon glyphicon-remove'></span></a></td>
+					<td><a href="javascript:void(0);" style="font-size: 16px;"
+						id="addRowdata" title="Add More Rows"><span
+							class="glyphicon glyphicon-plus"></span></a></td>
+					<td><a href='javascript:void(0);' class='save'><span
+							class='glyphicon glyphicon-edit'></span></a></td>
+				</tr>
+				</c:forEach>				
+				</c:if>
+					
 				</table>
 			</div>
 		</div>
 	</form:form>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	// Regex to check whether the given text having any number
 	var regex = /^(.+?)(\d+)$/i;
@@ -251,13 +299,13 @@
 			}
 		});
 	});
-	/* $( ".fromdatepicker" ).datepicker({
+	$( ".fromdatepicker" ).datepicker({
 		stepMonths: 0,
 	});
 
 	$( ".todatepicker" ).datepicker({
 		stepMonths: 0,
-	});*/
+	});
 
 	function showDiv() {
 		$('#tabs').show();
