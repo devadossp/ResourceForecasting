@@ -167,8 +167,7 @@
 							</c:forEach>
 						</form:select>
 					</td>
-					<td><form:input id="noofdaysId" path="noOfDays" maxlength="3"
-							style="width:50px" value="${leaveDetailsList.noofdays}"/></td>
+					
 					<td class="rowClass"><form:select id="monthId"
 							path="selectedMonth" class="month"
 							style="width:120px;height:26.5px">
@@ -180,7 +179,9 @@
 					<td><form:input path="fromDate" maxlength="10" id="fromdatepicker"
 							class="fromdatepicker" value="${leaveDetailsList.fromdate}"/></td>
 					<td><form:input path="toDate" maxlength="10" id="todatepicker"
-							class="todatepicker" value="${leaveDetailsList.todate}"/></td>
+							class="todatepicker" value="${leaveDetailsList.todate}"/></td>		
+					<td><form:input id="noofdaysId" path="noOfDays" maxlength="3"
+							style="width:50px" value="${leaveDetailsList.noofdays}"/></td>
 					<td><span id="tothrsId" lang="hours">${leaveDetailsList.totalhours}</span></td>
 					<td><span id="worhrsId" lang="hours">${leaveDetailsList.workinghours}</span></td>
 					<td><a href='javascript:void(0);' class='remove'><span
