@@ -42,6 +42,8 @@ public class LeaveDetailsController extends BaseController{
 			userDetailsScreenVO.setAssignment(userDetailsVO.getLocationDetails().getLocationType());
 			getMonths(userDetailsScreenVO);
 			model.addAttribute("userDetailsScreenVO", userDetailsScreenVO);
+			List leavedetails = service.getLeaveDetails(userDetailsVO.getAssociateDetails().getAssociateId());
+			request.setAttribute("leaveDetailsList", leavedetails);
 		} else {
 			return new ModelAndView("login");
 		}

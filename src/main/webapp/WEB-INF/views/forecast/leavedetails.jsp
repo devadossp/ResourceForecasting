@@ -66,7 +66,52 @@
 								class="glyphicon glyphicon-plus"></span></a></th>
 						<th>&nbsp;</th>
 						<th>&nbsp;</th>
-					<tr>
+					
+					<c:if test="${not empty leaveDetailsList[0]}">				
+				<c:forEach var="leaveDetailsList" items="${leaveDetailsList[0]}">
+				<tr>
+					<td>
+						<form:select id="locationId" path="location" class="location" style="width:150px;height:26.5px">
+							<c:forEach items="${userDetailsScreenVO.location_list}" var="element">							
+								<c:choose>
+								<c:when test="${element.location_id eq leaveDetailsList.locationid}">
+								<form:option value="${element.location_id}" selected="selected">${element.locationName}</form:option>
+								</c:when>
+								<c:otherwise>
+								<form:option value="${element.location_id}" >${element.locationName}</form:option>
+								</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</form:select>
+					</td>
+					
+					<td class="rowClass"><form:select id="monthId"
+							path="selectedMonth" class="month"
+							style="width:120px;height:26.5px">
+							<c:forEach items="${userDetailsScreenVO.month_list}"
+								var="element">
+								<form:option value="${element.month_id}">${element.month_name}</form:option>
+							</c:forEach>
+						</form:select></td>
+					<td><form:input path="fromDate" maxlength="10" id="fromdatepicker"
+							class="fromdatepicker" value="${leaveDetailsList.fromdate}"/></td>
+					<td><form:input path="toDate" maxlength="10" id="todatepicker"
+							class="todatepicker" value="${leaveDetailsList.todate}"/></td>		
+					<td><form:input id="noofdaysId" path="noOfDays" maxlength="3"
+							style="width:50px" value="${leaveDetailsList.noofdays}"/></td>
+					<td><span id="tothrsId" lang="hours">${leaveDetailsList.totalhours}</span></td>
+					<td><span id="worhrsId" lang="hours">${leaveDetailsList.workinghours}</span></td>
+					<td><a href='javascript:void(0);' class='remove'><span
+							class='glyphicon glyphicon-remove'></span></a></td>
+					<td><a href="javascript:void(0);" style="font-size: 16px;"
+							id="addRowdata" title="Save"><span
+								class="glyphicon glyphicon-ok-sign"></span></a></td>
+					<td><a href='javascript:void(0);' class='save'><span
+							class='glyphicon glyphicon-edit'></span></a></td>
+				</tr>
+				</c:forEach>				
+				</c:if>
+				<tr>
 						<td><form:select id="locationId" path="location"
 								class="location" style="width:150px;height:26.5px">
 								<c:forEach items="${userDetailsScreenVO.location_list}"
@@ -118,40 +163,9 @@
 								class="glyphicon glyphicon-plus"></span></a></th>
 						<th>&nbsp;</th>
 						<th>&nbsp;</th>
-					<tr>
-						<td><form:select id="locationId" path="location"
-								class="location" style="width:150px;height:26.5px">
-								<c:forEach items="${userDetailsScreenVO.location_list}"
-									var="element">
-									<form:option value="${element.location_id}">${element.locationName}</form:option>
-								</c:forEach>
-							</form:select></td>
-						<td class="rowClass"><form:select id="monthId"
-								path="selectedMonth" class="month"
-								style="width:120px;height:26.5px">
-								<c:forEach items="${userDetailsScreenVO.month_list}"
-									var="element">
-									<form:option value="${element.month_id}">${element.month_name}</form:option>
-								</c:forEach>
-							</form:select></td>
-						<td><form:input path="fromDate" maxlength="10"
-								id="fromdatepicker" class="fromdatepicker" /></td>
-						<td><form:input path="toDate" maxlength="10"
-								id="todatepicker" class="todatepicker" /></td>
-						<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
-								style="width:50px" /></td>
-						<td><span id="tothrsId" lang="hours"></span></td>
-						<td><span id="worhrsId" lang="hours"></span></td>
-						<td><a href='javascript:void(0);' class='remove'><span
-								class='glyphicon glyphicon-remove'></span></a></td>
-						<td><a href="javascript:void(0);" style="font-size: 16px;"
-							id="addRowdata" title="Save"><span
-								class="glyphicon glyphicon-ok-sign"></span></a></td>
-						<td><a href='javascript:void(0);' class='save'><span
-								class='glyphicon glyphicon-edit'></span></a></td>
-					</tr>
-					<c:if test="${not empty leaveDetailsList}">				
-				<c:forEach var="leaveDetailsList" items="${leaveDetailsList}">
+					
+					<c:if test="${not empty leaveDetailsList[1]}">				
+				<c:forEach var="leaveDetailsList" items="${leaveDetailsList[1]}">
 				<tr>
 					<td>
 						<form:select id="locationId" path="location" class="location" style="width:150px;height:26.5px">
@@ -187,13 +201,45 @@
 					<td><a href='javascript:void(0);' class='remove'><span
 							class='glyphicon glyphicon-remove'></span></a></td>
 					<td><a href="javascript:void(0);" style="font-size: 16px;"
-						id="addRowdata" title="Add More Rows"><span
-							class="glyphicon glyphicon-plus"></span></a></td>
+							id="addRowdata" title="Save"><span
+								class="glyphicon glyphicon-ok-sign"></span></a></td>
 					<td><a href='javascript:void(0);' class='save'><span
 							class='glyphicon glyphicon-edit'></span></a></td>
 				</tr>
 				</c:forEach>				
 				</c:if>
+				<tr>
+						<td><form:select id="locationId" path="location"
+								class="location" style="width:150px;height:26.5px">
+								<c:forEach items="${userDetailsScreenVO.location_list}"
+									var="element">
+									<form:option value="${element.location_id}">${element.locationName}</form:option>
+								</c:forEach>
+							</form:select></td>
+						<td class="rowClass"><form:select id="monthId"
+								path="selectedMonth" class="month"
+								style="width:120px;height:26.5px">
+								<c:forEach items="${userDetailsScreenVO.month_list}"
+									var="element">
+									<form:option value="${element.month_id}">${element.month_name}</form:option>
+								</c:forEach>
+							</form:select></td>
+						<td><form:input path="fromDate" maxlength="10"
+								id="fromdatepicker" class="fromdatepicker" /></td>
+						<td><form:input path="toDate" maxlength="10"
+								id="todatepicker" class="todatepicker" /></td>
+						<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
+								style="width:50px" /></td>
+						<td><span id="tothrsId" lang="hours"></span></td>
+						<td><span id="worhrsId" lang="hours"></span></td>
+						<td><a href='javascript:void(0);' class='remove'><span
+								class='glyphicon glyphicon-remove'></span></a></td>
+						<td><a href="javascript:void(0);" style="font-size: 16px;"
+							id="addRowdata" title="Save"><span
+								class="glyphicon glyphicon-ok-sign"></span></a></td>
+						<td><a href='javascript:void(0);' class='save'><span
+								class='glyphicon glyphicon-edit'></span></a></td>
+					</tr>
 					
 				</table>
 			</div>

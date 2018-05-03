@@ -26,7 +26,9 @@ public class leaveDetailsRowMapper implements RowMapper {
 		leaveDetailsVO.setTotalworkingdays(rs.getInt("TOTAL_WORKING_DAYS"));
 		leaveDetailsVO.setWorkinghours(rs.getInt("WORKING_HOURS"));
 		leaveDetailsVO.setLocationid(rs.getString("location_details"));
-		
+		leaveDetailsVO.setLeave_type(rs.getString("LEAVE_TYPE"));
+		leaveDetailsVO.setLeave_id(rs.getInt("LEAVE_ID"));
+		leaveDetailsVO.setTotalhours(rs.getInt("TOTAL_HOURS_PER_MONTH"));
 		
 		return leaveDetailsVO;
 	}
