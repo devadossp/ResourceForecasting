@@ -1,6 +1,7 @@
 package com.cts.commsmedia.forecast.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -85,4 +86,24 @@ public class LeaveDetailsController extends BaseController{
 		}
 		return leaveDetailsDTO;
 	}
+	
+	@RequestMapping(value = "/getLeaves", method = { RequestMethod.GET })
+	public ModelAndView getLeaveDetails(HttpServletRequest request,
+			@ModelAttribute("userDetailsScreenVO") UserDetailsScreenVO userDetailsScreenVO, Model model) {
+		UserDetailsVO userDetailsVO = null;
+		userDetailsVO = getUserDetails(request);
+		List leavedetails = service.getLeaveDetails(userDetailsVO.getAssociateDetails().getAssociateId());
+		
+		if (userDetailsVO != null) {
+			userDetailsScreenVO = service.getLocationDetails();
+			userDetailsScreenVO.setFullname(userDetailsVO.getAssociateDetails().getAssociateName());
+			userDetailsScreenVO.setEmpID(userDetailsVO.getAssociateDetails().getAssociateId());
+			userDetailsScreenVO.setProjectId(userDetailsVO.getAssociateDetails().getProjectName());
+			getMonths(userDetailsScreenVO);
+		}
+		model.addAttribute("userDetailsScreenVO", userDetailsScreenVO);
+		request.setAttribute("leaveDetailsList", leavedetails);
+		return new ModelAndView("leavedetails");
+	}
+
 }

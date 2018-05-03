@@ -124,4 +124,20 @@ public class UserDAOImpl implements UserDAO{
 		}
 		return rows;
 	}
+	
+public List getLeaveDetails(String associate_id) {
+		
+		String Current_Month = CommonUtils.getMonth(RFConstants.CURRENT_MONTH, RFConstants.MONTHS.NAME);
+		String Next_Month = CommonUtils.getMonth(RFConstants.NEXT_MONTH, RFConstants.MONTHS.NAME);			
+		StringBuffer sqlQuery = new StringBuffer();			
+		sqlQuery.append("select rl.location_id||'|'||rl.daily_hours||'|'||"+Current_Month+"||'|'||"+Next_Month+" as location_details,rld.* From Rf_Leave_Details Rld, Rf_Location Rl");
+				 sqlQuery.append(" Where Rld.Location_Id=Rl.Location_Id And associate_id='?' and");
+		sqlQuery.append("(to_char(from_date,'MON YYYY')=to_char(sysdate,'MON YYYY') or to_char(from_date,'MON YYYY')=to_char(ADD_MONTHS(sysdate,1),'MON YYYY'))");
+		@SuppressWarnings("unchecked")
+		List leaveDetails = (List) jdbcTemplate.query(sqlQuery.toString(), new Object[] { associate_id },
+				new leaveDetailsRowMapper());
+	
+	return leaveDetails;
+	}
+
 }

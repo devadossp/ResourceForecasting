@@ -1,5 +1,7 @@
 package com.cts.commsmedia.forecast.dao;
 
+import java.util.List;
+
 import com.cts.commsmedia.forecast.dto.LeaveDetailsDTO;
 import com.cts.commsmedia.forecast.model.UserDetailsScreenVO;
 import com.cts.commsmedia.forecast.model.UserDetailsVO;
@@ -11,4 +13,6 @@ public interface UserDAO {
 	 public UserDetailsScreenVO getLocationDetails();
 	 
 	 public int insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO);
+	 
+	 public List getLeaveDetails(String associate_id);
 }

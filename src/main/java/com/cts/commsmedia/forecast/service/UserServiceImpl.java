@@ -1,5 +1,7 @@
 package com.cts.commsmedia.forecast.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +27,9 @@ public class UserServiceImpl implements UserService {
 	public int insertLeaveDetails(LeaveDetailsDTO leaveDetailsDTO){
 		return userDao.insertLeaveDetails(leaveDetailsDTO);
 	}
+	
+	public List getLeaveDetails (String associate_id){
+		return userDao.getLeaveDetails(associate_id);
+	}
+
 }
