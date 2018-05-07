@@ -29,9 +29,11 @@
 					<th><spring:message code="skill" /></th>
 					<th><spring:message code="geo" /></th>
 					<th><spring:message code="department" /></th>
-					<th><spring:message code="ratePerHour" /></th>
+					<th><spring:message code="rate.per.hour" /></th>
+					<th><spring:message code="select.a.assignment" /></th>
 					<th><spring:message code="effective.from" /></th>
 					<th><spring:message code="effective.to" /></th>
+				
 					
 					<th><a href="javascript:void(0);" style="font-size: 18px;"
 						id="addMore" title="Add More Rows"><span
@@ -48,7 +50,9 @@
 					</td>
 					<td>
 						<form:select id="geographyId" path="geography" class="geography" style="width:150px;height:26.5px">
-							<c:forEach items="${rateCardDetailsVO.location_list}" var="element">
+						<form:option value="0" >Select a Geo</form:option>
+							<c:forEach items="${rateCardDetailsVO.locationList}" var="element">
+								
 								<form:option value="${element.location_id}">${element.locationName}</form:option>
 							</c:forEach>
 						</form:select>
@@ -64,15 +68,19 @@
 					<form:input path="ratePerHour" maxlength="10" id="ratePerHour"
 							class="ratePerHour" />
 					</td>
+					<td>
+					<form:select id="onsite" path="onsite" class="onsite" style="width:150px;height:26.5px">
+						<form:option value="0" >Select a Assignment</form:option>
+						<form:option value="1">Onsite</form:option>
+							<form:option value="2">OffShore</form:option>
+						</form:select>
+					</td>
+					
 					
 					<td><form:input path="fromDate" maxlength="10" id="fromdatepicker"
-							class="fromdatepicker" /></td>
+							class="fromdatepicker"/></td>
 					<td><form:input path="toDate" maxlength="10" id="todatepicker"
-							class="todatepicker" /></td>
-					<td><form:input id="noofdaysId" path="noOfDays" maxlength="2"
-							style="width:50px" /></td>		
-					<td><span id="tothrsId" lang="hours"></span></td>
-					<td><span id="worhrsId" lang="hours"></span></td>
+							class="todatepicker"/></td>
 					<td><a href='javascript:void(0);' class='remove'><span
 							class='glyphicon glyphicon-remove'></span></a></td>
 					<td><a href="javascript:void(0);" style="font-size: 16px;"
@@ -89,8 +97,9 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
+$("#fromdatepicker,#todatepicker").datepicker({dateFormat: 'dd/mm/yy'});
 
-$( "#fromdatepicker,#todatepicker" ).datepicker();
+
 	// Regex to check whether the given text having any number
 	var regex = /^(.+?)(\d+)$/i;
 
@@ -110,11 +119,18 @@ $( "#fromdatepicker,#todatepicker" ).datepicker();
 			data.find('select').attr('id', function(i, val) {
 				return val + count;
 			});
-			data.find('span[lang="hours"]').attr('id', function(i, val) {
+			data.find('input[name="fromDate"]').attr('id',function(i, val){
+			return val+count;	
+			});
+			data.find('input[name="toDate"]').attr('id',function(i, val){
+				return val+count;	
+				});
+			data.find('input[class="ratePerHour"]').attr('id', function(i, val) {
 				return val + count;
 			});
 			data.find('span[lang="hours"]').text('');	
 			count++;
+			
 		});
 		// Deleting new rows
 		$(document).on('click', '.remove', function() {
@@ -133,67 +149,65 @@ $( "#fromdatepicker,#todatepicker" ).datepicker();
 	$("#addRowdata").click(function() {
 		var $row = $(this).closest("tr"); // Find the row
 		var id_val = getIdValue($row);
-		var $location_id = $row.find("#locationId"+id_val+" option:selected").val();
+		var $location_id = $row.find("#geographyId"+id_val+" option:selected").val();
 		var location_details = $location_id.split("|");
 
-		var $associate_id = <c:out value="${userDetailsScreenVO.empID}" />;
-		var $location = $row.find("#locationId"+id_val+" option:selected").text();
-		var $noofdays = $row.find("#noofdaysId").val();
-		var $month = $row.find("#monthId"+id_val+" option:selected").text();
-		var $fromdate = $row.find("#fromdatepicker").val();
-		var $todate = $row.find("#todatepicker").val();
-		var $tothrs = $row.find("#tothrsId"+id_val).text();
-		var working_hrs = $tothrs-($noofdays*location_details[1]);
-		$("#worhrsId" + id_val).text(working_hrs);
-		var $worhrs = $row.find("#worhrsId"+id_val).text();
+		//var $associate_id = <c:out value="${userDetailsScreenVO.empID}" />;
+		var $dept = $row.find("#deptId"+id_val+" option:selected").val();
+		var $skillId = $row.find("#skillId"+id_val+" option:selected").val();
+		var $onsite = $row.find("#onsite"+id_val+" option:selected").val();
+	   var $ratePerHour = $row.find("#ratePerHour"+id_val).val();
+		var $fromdate = $row.find("#fromdatepicker"+id_val).val();
+		var $todate = $row.find("#todatepicker"+id_val).val();
+	
 		
-		/*  var emp_leave_details = { 
-		  		associate_id: $associate_id,
-		  		noofdays: $noofdays,
-		  		month_name: $month,
+		
+		  var rate_card_details = {
+				  location:location_details[0],
+				  skillName:$skillId,
+		  		department:$dept,
+		  		rate: $ratePerHour,
+		  		onsite: $onsite,
 		  		fromdate: $fromdate,
-		  		todate: $todate,
-		  		totalhours: $tothrs,
-		  		workinghours: $worhrs
+		  		todate: $todate
+		  		
 			};
+		  alert(rate_card_details);
 		  
-		 $.ajax({ 
-		  	    url: "saveLeaves", 
+		$.ajax({ 
+		  	    url: "saveRateCard", 
 		  	    type: 'POST', 
 		  	    dataType: 'json', 
-		  	    data: JSON.stringify(emp_leave_details),
+		  	    data: JSON.stringify(rate_card_details),
 		  	    contentType: 'application/json',
 		  	    mimeType: 'application/json',
 		  	    success: function(data) { 
-		  	        alert(data.associate_id + " " + data.workinghours);
+		  	        alert("success"+data.rateValue);
 		  	    },
 		  	    error:function(data,status,er) { 
 		  	        alert("error: "+data+" status: "+status+" er:"+er);
 		  	    }
-		  	});*/
+		  	});
 	});
 
+
 	
-	jQuery(document).ready(
-			function() {
-				$("#geographyId").change(
-						function() {
-							$assignment = $("select[name='assignment']");
-							if ($(this).val() == "0") {
-								$("select[name='assignment'] option").remove();
-								$("<option>Select a Assignment</option>")
-										.appendTo($assignment);
-							} else if ($(this).val() == 3) {
-								$("select[name='assignment'] option").remove();
-								$("<option value='Offshore'>Offshore</option>")
-										.appendTo($assignment);
-							} else {
-								$("select[name='assignment'] option").remove();
-								$("<option value='Onsite'>Onsite</option>")
-										.appendTo($assignment);
-							}
-						});
-			});
+
+	function getIdValue($row)
+	{
+		var $att_id = $row.find("select").attr('id');
+		// To Check any number in the id attribute value 
+		alert($att_id);
+		var match = $att_id.match(regex);
+		var id_val = "";
+		if (match != null) {
+			id_val = $att_id
+					.substring(($att_id.indexOf("Id") + 2),
+							$att_id.length);
+
+		}
+		return id_val;
+	}
 </script>
 
 <style type="text/css">

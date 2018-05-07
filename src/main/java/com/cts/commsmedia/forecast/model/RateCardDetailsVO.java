@@ -20,6 +20,9 @@ public class RateCardDetailsVO implements Serializable {
 	private List deptList;
 	private List skillList;
 	private List locationList;
+    private String noOfDays;
+    private String totalHrs;
+    private String workingHrs;
 	
 	/**
 	 * @return the rateCardId
@@ -152,6 +155,42 @@ public class RateCardDetailsVO implements Serializable {
 	 */
 	public void setLocationList(List locationList) {
 		this.locationList = locationList;
+	}
+	/**
+	 * @return the noOfDays
+	 */
+	public String getNoOfDays() {
+		return noOfDays;
+	}
+	/**
+	 * @param noOfDays the noOfDays to set
+	 */
+	public void setNoOfDays(String noOfDays) {
+		this.noOfDays = noOfDays;
+	}
+	/**
+	 * @return the totalHrs
+	 */
+	public String getTotalHrs() {
+		return totalHrs;
+	}
+	/**
+	 * @param totalHrs the totalHrs to set
+	 */
+	public void setTotalHrs(String totalHrs) {
+		this.totalHrs = totalHrs;
+	}
+	/**
+	 * @return the workingHrs
+	 */
+	public String getWorkingHrs() {
+		return workingHrs;
+	}
+	/**
+	 * @param workingHrs the workingHrs to set
+	 */
+	public void setWorkingHrs(String workingHrs) {
+		this.workingHrs = workingHrs;
 	}
 	
 	
